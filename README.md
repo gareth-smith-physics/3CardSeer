@@ -15,6 +15,7 @@ The workflow demonstrated here could be applied to any number of situations wher
 - **Complete Game State Modeling**: Tracks all aspects of MTG gameplay (life, permanents, hand, graveyard, etc.)
 - **Interactive Visualization**: GUI with hover effects, tooltips, and visual indicators 
 - **Automatic Tree Analysis**: Command-line tools for automated matchup analysis
+- **Gauntlet Analysis**: Batch analysis of multiple decks with matchup grids and rankings
 
 ## Requirements
 
@@ -59,6 +60,19 @@ python analyze_matchup.py --help
 python analyze_matchup.py 'Mana Vault' 'Ancient Tomb' 'Lodestone Golem' 'Mutavault' 'Mox Jet' 'Aunties Sentence' --matchup_name 'Lodestone_vs_Aunties' --load-tree --skip-population
 ```
 
+### Gauntlet Analysis
+
+```bash
+# Analyze matchups between multiple decks in a gauntlet format
+python analyze_gauntlet.py example_gauntlet.csv --output my_results.csv
+
+# With custom output file and analysis settings
+python analyze_gauntlet.py example_gauntlet.csv --output my_results.csv --threshold 7 --max-depth 15
+
+# To see all available settings
+python analyze_gauntlet.py --help
+```
+
 ### Tree Visualization
 ```bash
 # Visualize a saved tree
@@ -67,7 +81,6 @@ python visualize_tree.py 'tree_name'
 # Two test trees are provided
 python visualize_tree.py 'Lodestone_vs_Aunties_player1'
 python visualize_tree.py 'Lodestone_vs_Aunties_player2'
-
 ```
 
 ## Visualization

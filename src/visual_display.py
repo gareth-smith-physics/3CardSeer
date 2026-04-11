@@ -823,10 +823,6 @@ class GameStateWindow:
         if game_tree_node.is_terminal:
             status_parts.append("Terminal")
         
-        # Dead end status
-        if game_tree_node.is_dead_end:
-            status_parts.append("Dead End")
-        
         # Loop status
         if game_tree_node.is_loop:
             loop_type = game_tree_node.loop_type or "Unknown"

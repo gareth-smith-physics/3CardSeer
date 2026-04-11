@@ -138,31 +138,39 @@ class AutoTreeAnalyzer:
         while nodes_to_expand and tree.total_nodes < self.config.max_nodes:
             current_node = nodes_to_expand.popleft()
             
-            # Skip if already expanded or terminal
-            if (current_node.node_id in expanded_nodes or 
-                current_node.is_terminal or 
-                current_node.depth >= self.config.max_depth):
-                continue
-            
-            # Check viability threshold
-            if (current_node.viability is not None and 
-                current_node.viability < self.config.viability_threshold):
-                continue
-            
             print(f"\n   {len(expanded_nodes)} expanded, {len(nodes_to_expand)} nodes to expand")
             print(f"   Expanding node at depth {current_node.depth} (viability: {current_node.viability})")
             
             # Expand the node
             children = tree.expand_node(current_node, self.gemini_client, self.config.max_branches_per_node)
             expanded_nodes.add(current_node.node_id)
-            
-            # Sort children by viability (highest first) for greedy expansion
-            viable_children = [child for child in children if child.viability is not None and child.viability >= self.config.viability_threshold]
-            viable_children.sort(key=lambda x: x.viability, reverse=True)
-            
-            # Add viable children to expansion queue
-            for child in viable_children:
-                nodes_to_expand.append(child)
+
+            if current_node.depth+1 >= self.config.max_depth:
+                print(f"   Reached max depth, stopping expansion")
+            else:
+                
+                # Add viable children to expansion queue
+                for child in children:
+
+                    # Check viability threshold
+                    if (child.viability < self.config.viability_threshold):
+                        continue
+
+                    # Skip if terminal or max depth reached
+                    if (child.is_terminal):
+                        continue
+                
+                    nodes_to_expand.append(child)
+
+                # If no viable children were added, stop expanding
+                if len(children)>0 and not any([child.viability >= self.config.viability_threshold for child in children]):
+                    print(f"   Children but none viable, expanding most viable node anyway")
+                    # Expand the most viable nodes
+                    max_viability = max([child.viability for child in children])
+                    for child in children:
+                        if child.viability==max_viability and not child.is_terminal:
+                            nodes_to_expand.append(child)
+                    
 
             # Save tree after every expansion
             self.tree_manager.save_tree(tree, f"{self.matchup_name}_{starting_player}")

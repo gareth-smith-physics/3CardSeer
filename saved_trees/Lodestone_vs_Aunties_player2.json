@@ -29,7 +29,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 1,
         "turn_player": "player1",
@@ -90,7 +89,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 2,
         "turn_player": "player2",
@@ -166,7 +164,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 2,
         "turn_player": "player2",
@@ -242,7 +239,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 2,
         "turn_player": "player2",
@@ -313,7 +309,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 2,
         "turn_player": "player2",
@@ -369,7 +364,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -453,7 +447,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -539,7 +532,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -615,7 +607,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -698,7 +689,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -770,7 +760,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -850,7 +839,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 4,
         "turn_player": "player2",
@@ -933,7 +921,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 4,
         "turn_player": "player2",
@@ -1013,7 +1000,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 4,
         "turn_player": "player2",
@@ -1166,7 +1152,6 @@
           0
         ]
       ],
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 4,
         "turn_player": "player2",
@@ -1238,7 +1223,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 4,
         "turn_player": "player2",
@@ -1310,7 +1294,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 4,
         "turn_player": "player2",
@@ -1373,7 +1356,7 @@
       "explanation": "Player 1 uses Mox Jet to generate {B} to pay the {1} activation cost of Mutavault. Mutavault becomes a 2/2 creature and attacks player 2 for 2 damage. Since Player 2 has no blockers and cannot cast Lodestone Golem with their current mana, attacking with Mutavault is the best way to progress toward winning the game.",
       "depth": 3,
       "is_terminal": false,
-      "outcome": "player1",
+      "outcome": null,
       "score": 1.0,
       "viability": 10,
       "is_transposition": false,
@@ -1382,7 +1365,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": true,
       "game_state": {
         "turn_counter": 4,
         "turn_player": "player2",
@@ -1464,7 +1446,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 4,
         "turn_player": "player2",
@@ -1621,7 +1602,6 @@
           0
         ]
       ],
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 5,
         "turn_player": "player1",
@@ -1701,7 +1681,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 5,
         "turn_player": "player1",
@@ -1864,7 +1843,6 @@
           0
         ]
       ],
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 5,
         "turn_player": "player1",

@@ -29,7 +29,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 1,
         "turn_player": "player1",
@@ -90,7 +89,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 2,
         "turn_player": "player2",
@@ -176,7 +174,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 2,
         "turn_player": "player2",
@@ -247,7 +244,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 2,
         "turn_player": "player2",
@@ -311,7 +307,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 2,
         "turn_player": "player2",
@@ -367,7 +362,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -466,7 +460,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -555,7 +548,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -644,7 +636,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -725,7 +716,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -826,7 +816,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 4,
         "turn_player": "player2",
@@ -922,7 +911,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -1021,7 +1009,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 3,
         "turn_player": "player1",
@@ -1111,7 +1098,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 4,
         "turn_player": "player2",
@@ -1210,7 +1196,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 4,
         "turn_player": "player2",
@@ -1355,7 +1340,6 @@
           0
         ]
       ],
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 5,
         "turn_player": "player1",
@@ -1451,7 +1435,6 @@
       "loop_type": null,
       "loop_target_id": null,
       "loop_hp_totals": null,
-      "is_dead_end": false,
       "game_state": {
         "turn_counter": 5,
         "turn_player": "player1",

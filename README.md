@@ -70,6 +70,16 @@ python visualize_tree.py 'Lodestone_vs_Aunties_player2'
 
 ```
 
+## Visualization
+
+Two displays are provided. First is an interactive tree display. Each decision is visualized as a circular node, with a number corresponding to Gemini's viability score for each option. Hovering over a node shows a tooltip with the description of the decision, and clicking on the node opens the game state display to that point in the tree.
+
+![tree display](tree_display.png)
+
+The second display is a game state visualization. This shows the game state of the selected node. Furthermore, it shows Gemini's description of the decision leading to this game state, as well as a viability score for the decision and an explanation for the viability score.
+
+![game state display](game_state_display.png)
+
 ## Architecture
 
 ### Core Components

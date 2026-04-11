@@ -195,16 +195,34 @@ class GameTreeWindow:
         
     def _draw_edges(self):
         """Draw edges between parent and child nodes."""
+        # Create a set of node IDs that are in the optimal path for quick lookup
+        optimal_path_nodes = set()
+        if self.game_tree.optimal_path:
+            optimal_path_nodes = {node.node_id for node in self.game_tree.optimal_path}
+        
         for _, visual_node in self.visual_nodes.items():
             game_tree_node = visual_node.game_tree_node
             if game_tree_node and game_tree_node.parent:
                 parent_visual = self.visual_nodes.get(game_tree_node.parent.node_id)
                 if parent_visual:
-                    self.canvas.create_line(
-                        parent_visual.x, parent_visual.y,
-                        visual_node.x, visual_node.y,
-                        fill="black", width=2, tags="edge"
-                    )
+                    # Check if this edge is part of the optimal path
+                    is_optimal = (game_tree_node.node_id in optimal_path_nodes and 
+                                 game_tree_node.parent.node_id in optimal_path_nodes)
+                    
+                    if is_optimal:
+                        # Draw optimal path edges as thick green lines
+                        self.canvas.create_line(
+                            parent_visual.x, parent_visual.y,
+                            visual_node.x, visual_node.y,
+                            fill="green", width=4, tags="edge"
+                        )
+                    else:
+                        # Draw normal edges as black lines
+                        self.canvas.create_line(
+                            parent_visual.x, parent_visual.y,
+                            visual_node.x, visual_node.y,
+                            fill="black", width=2, tags="edge"
+                        )
     
     def _draw_nodes(self):
         """Draw all nodes on the canvas."""

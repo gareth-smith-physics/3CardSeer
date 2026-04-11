@@ -83,6 +83,7 @@ class GameTree:
         self.terminal_nodes: List[GameTreeNode] = []
         self.max_depth = 0
         self.total_nodes = 1
+        self.optimal_path: Optional[List[GameTreeNode]] = None
     
     def add_node(self, parent_node: GameTreeNode, new_game_state: GameState, decision: str, 
                viability: float, explanation: str) -> GameTreeNode:
@@ -256,7 +257,8 @@ class GameTree:
                 "player1_cards": [card.name for card in self.player1_cards],
                 "player2_cards": [card.name for card in self.player2_cards],
                 "total_nodes": self.total_nodes,
-                "max_depth": self.max_depth
+                "max_depth": self.max_depth,
+                "optimal_path": [node.node_id for node in self.optimal_path] if self.optimal_path else None
             },
             "nodes": {}
         }
@@ -286,6 +288,7 @@ class GameTree:
         tree = cls(player1_cards, player2_cards)
         tree.total_nodes = metadata["total_nodes"]
         tree.max_depth = metadata["max_depth"]
+        tree.optimal_path = None  # Will be set after nodes are loaded
         
         # Clear the default nodes and load from file
         tree.nodes = {}
@@ -340,6 +343,14 @@ class GameTree:
         
         # Collect terminal nodes
         tree.terminal_nodes = [node for node in tree.nodes.values() if node.is_terminal]
+        
+        # Restore optimal path if it exists
+        optimal_path_ids = metadata.get("optimal_path")
+        if optimal_path_ids:
+            tree.optimal_path = []
+            for node_id in optimal_path_ids:
+                if node_id in tree.nodes:
+                    tree.optimal_path.append(tree.nodes[node_id])
         
         print(f"Game tree loaded from {filepath} with {tree.total_nodes} nodes")
         return tree

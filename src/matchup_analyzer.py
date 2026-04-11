@@ -91,6 +91,10 @@ class AutoTreeAnalyzer:
         p1_result = self._analyze_tree(trees["player1"])
         p2_result = self._analyze_tree(trees["player2"])
 
+        # Save optimal paths to trees
+        trees["player1"].optimal_path = p1_result["optimal_path"]
+        trees["player2"].optimal_path = p2_result["optimal_path"]
+
         self.tree_manager.save_tree(trees["player1"], f"{self.matchup_name}_player1")
         self.tree_manager.save_tree(trees["player2"], f"{self.matchup_name}_player2")
         

@@ -84,11 +84,6 @@ The second display is a game state visualization. This shows the game state of t
 
 Here is some sample output for the provided matchup of Mana Vault + Ancient Tomb + Lodestone Golem vs Mutavault + Mox Jet + Aunties Sentence:
 
-<style>
-code {
-    font-size: 75%;
-}
-</style>
 
 ```
 ============================================================

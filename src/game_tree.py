@@ -32,7 +32,6 @@ class GameTreeNode:
     loop_type: Optional[str] = None  # "exact" or "near" to describe the type of loop
     loop_target_id: Optional[str] = None  # ID of the node this creates a loop with
     loop_hp_totals: Optional[List[tuple[int, int]]] = None  # List of (p1_hp, p2_hp) tuples for loop nodes
-    is_dead_end: bool = False  # True if this node has no viable children
     
     def __post_init__(self):
         if self.game_state.is_game_over():
@@ -62,7 +61,6 @@ class GameTreeNode:
             "loop_type": self.loop_type,
             "loop_target_id": self.loop_target_id,
             "loop_hp_totals": self.loop_hp_totals,
-            "is_dead_end": self.is_dead_end,
             "game_state": self.game_state.to_dict(),
             "children_ids": [child.node_id for child in self.children],
             "parent_id": self.parent.node_id if self.parent else None

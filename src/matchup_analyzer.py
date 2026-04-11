@@ -182,7 +182,6 @@ class AutoTreeAnalyzer:
             node = tree.nodes[node_id]
             node.score = None
             node.outcome = None
-            node.is_dead_end = False
     
     def _analyze_tree(self, tree: GameTree) -> Dict:
         """Analyze a tree using minimax to determine optimal play."""
@@ -205,22 +204,6 @@ class AutoTreeAnalyzer:
                         node.score = other_node.score
                         node.outcome = other_node.outcome
                         break
-        # Assign scores and outcomes to dead-end nodes
-        for node_id in tree.nodes:
-            node = tree.nodes[node_id]
-            n_children = len(node.children)
-            n_viable_children = len([child for child in node.children if child.viability is not None and child.viability >= self.config.viability_threshold])
-            if n_children > 0 and n_viable_children == 0:
-                node.is_dead_end = True
-                if node.game_state.player_to_act == "player1":
-                    node.score = -1.0
-                    node.outcome = "player2"
-                elif node.game_state.player_to_act == "player2":
-                    node.score = 1.0
-                    node.outcome = "player1"
-                else:
-                    node.score = 0.0
-                    node.outcome = "draw"
 
         # Propagate scores up the tree using minimax
         self._minimax(tree.root)

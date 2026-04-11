@@ -80,6 +80,115 @@ The second display is a game state visualization. This shows the game state of t
 
 ![game state display](game_state_display.png)
 
+## Sample output
+
+Here is some sample output for the provided matchup of Mana Vault + Ancient Tomb + Lodestone Golem vs Mutavault + Mox Jet + Aunties Sentence:
+
+<style>
+code {
+    font-size: 75%;
+}
+</style>
+
+```
+============================================================
+ANALYSIS RESULTS
+============================================================
+
+Outcome: WL (1.0)
+Analysis time: 0.12 seconds
+Total nodes analyzed: 39
+Maximum tree depth: 6
+
+Terminal nodes by outcome:
+   player1: 4
+   player2: 0
+   draw: 0
+
+************************************************************
+
+Optimal play path with first player starting (7 nodes):
+   1. (20:20) player1's turn, Phase.PRECOMBAT_MAIN, player1 to act
+         -> Play Ancient Tomb, tap it for {C}{C}, cast Mana Vault, tap it for {C}{C}{C}, and cast Lodestone Golem.
+
+   2. (18:20) player2's turn, Phase.PRECOMBAT_MAIN, player2 to act
+         -> Play Mutavault and Mox Jet, then pass the turn.
+
+   3. (17:20) player1's turn, Phase.PRECOMBAT_MAIN, player1 to act
+         -> Attack with Lodestone Golem
+
+   4. (17:20) player1's turn, Phase.PRECOMBAT_MAIN, player2 to act
+         -> Declare no blockers and proceed to the postcombat main phase.
+
+   5. (17:15) player1's turn, Phase.PRECOMBAT_MAIN, player1 to act
+         -> Pass the turn to player2
+
+   6. (17:15) player2's turn, Phase.PRECOMBAT_MAIN, player2 to act
+         -> Pass the turn to Player 1 without taking any actions.
+
+   7. (16:15) player1's turn, Phase.PRECOMBAT_MAIN, player1 to act
+          -> Loop detected (near)
+           Hp totals:
+             P1: 16, P2: 15
+             P1: 15, P2: 15
+             P1: 15, P2: 15
+             P1: 15, P2: 10
+             P1: 15, P2: 10
+             P1: 14, P2: 10
+             P1: 14, P2: 10
+             P1: 14, P2: 5
+             P1: 14, P2: 5
+             P1: 13, P2: 5
+             P1: 13, P2: 5
+             P1: 13, P2: 0
+
+************************************************************
+
+Optimal play path with second player starting (5 nodes):
+   1. (20:20) player1's turn, Phase.PRECOMBAT_MAIN, player1 to act
+         -> Play Mox Jet, play Mutavault, and cast Auntie's Sentence choosing Player 2. Choose Lodestone Golem from their hand to be discarded.
+
+   2. (20:20) player2's turn, Phase.PRECOMBAT_MAIN, player2 to act
+         -> Play Ancient Tomb and pass the turn.
+
+   3. (20:20) player1's turn, Phase.PRECOMBAT_MAIN, player1 to act
+         -> Activate Mutavault's ability using mana from Mox Jet, then attack with Mutavault for 2 damage. Finally, pass the turn to Player 2.
+
+   4. (20:18) player2's turn, Phase.PRECOMBAT_MAIN, player2 to act
+         -> Pass the turn to player 1 without casting any spells.
+
+   5. (20:18) player1's turn, Phase.PRECOMBAT_MAIN, player1 to act
+          -> Loop detected (near)
+           Hp totals:
+             P1: 20, P2: 18
+             P1: 20, P2: 18
+             P1: 20, P2: 16
+             P1: 20, P2: 16
+             P1: 20, P2: 14
+             P1: 20, P2: 14
+             P1: 20, P2: 12
+             P1: 20, P2: 12
+             P1: 20, P2: 10
+             P1: 20, P2: 10
+             P1: 20, P2: 8
+             P1: 20, P2: 8
+             P1: 20, P2: 6
+             P1: 20, P2: 6
+             P1: 20, P2: 4
+             P1: 20, P2: 4
+             P1: 20, P2: 2
+             P1: 20, P2: 2
+             P1: 20, P2: 0
+
+************************************************************
+
+To visualize the trees, run:
+  python visualize_tree.py 'Lodestone_vs_Aunties_player1'
+  python visualize_tree.py 'Lodestone_vs_Aunties_player2'
+
+============================================================
+```
+
 ## Architecture
 
 ### Core Components

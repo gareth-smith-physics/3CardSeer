@@ -11,7 +11,16 @@
       "Auntie's Sentence"
     ],
     "total_nodes": 17,
-    "max_depth": 6
+    "max_depth": 6,
+    "optimal_path": [
+      "46f7ea4e-a6e3-481b-84e8-795de60187ee",
+      "83fa5bcc-404c-45e3-8c92-ae5990051b60",
+      "1356564a-439d-475e-b3d7-3cee36046731",
+      "455422f6-96e8-457d-a442-8343afd69bb0",
+      "3f58142d-ea61-441c-9e6e-f4e027c12e7a",
+      "be51948c-edab-40f1-a909-349e63db06de",
+      "53db1156-0ca4-4e20-ba43-54a85c9c1281"
+    ]
   },
   "nodes": {
     "46f7ea4e-a6e3-481b-84e8-795de60187ee": {

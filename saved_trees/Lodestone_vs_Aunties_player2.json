@@ -11,7 +11,14 @@
       "Lodestone Golem"
     ],
     "total_nodes": 22,
-    "max_depth": 4
+    "max_depth": 4,
+    "optimal_path": [
+      "8f10788a-c414-47c1-bb5b-f74495b53a7f",
+      "41904aa2-33a2-45a5-90e9-fe1d00111380",
+      "feef2660-b4f3-41de-82ac-503ea2402338",
+      "1473ca2f-aa4f-45be-b4fc-e0f701e33bc1",
+      "dcc2875a-9f9e-4a8f-9899-3a550d4d953a"
+    ]
   },
   "nodes": {
     "8f10788a-c414-47c1-bb5b-f74495b53a7f": {

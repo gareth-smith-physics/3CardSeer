@@ -26,6 +26,8 @@ class AnalysisConfig:
 @dataclass
 class AnalysisResult:
     """Results of tree analysis."""
+    player1_cards: List[str]
+    player2_cards: List[str]
     outcome_string: str
     outcome_float: float
     optimal_path_p1: List[GameTreeNode]
@@ -113,6 +115,8 @@ class AutoTreeAnalyzer:
                     terminal_counts[node.outcome] += 1
         
         result = AnalysisResult(
+            player1_cards=[card.name for card in p1_cards],
+            player2_cards=[card.name for card in p2_cards],
             outcome_string=outcome_str,
             outcome_float=outcome_float,
             optimal_path_p1=optimal_path_p1,
@@ -353,6 +357,8 @@ class AutoTreeAnalyzer:
         print("ANALYSIS RESULTS")
         print("="*60)
         
+        print(f"\nPlayer 1 cards: {result.player1_cards}")
+        print(f"Player 2 cards: {result.player2_cards}")
         print(f"\nOutcome: {result.outcome_string} ({result.outcome_float})")
         print(f"Analysis time: {result.analysis_time:.2f} seconds")
         print(f"Total nodes analyzed: {result.total_nodes}")

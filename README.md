@@ -90,6 +90,9 @@ Here is some sample output for the provided matchup of Mana Vault + Ancient Tomb
 ANALYSIS RESULTS
 ============================================================
 
+Player 1 cards: ['Mana Vault', 'Ancient Tomb', 'Lodestone Golem']
+Player 2 cards: ['Mutavault', 'Mox Jet', "Auntie's Sentence"]
+
 Outcome: WL (1.0)
 Analysis time: 0.12 seconds
 Total nodes analyzed: 39

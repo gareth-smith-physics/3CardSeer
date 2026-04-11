@@ -1,0 +1,6 @@
+requests
+google-genai
+python-dotenv
+dataclasses-json
+typing-extensions
+Pillow

@@ -1,0 +1,1706 @@
+{
+  "metadata": {
+    "player1_cards": [
+      "Mutavault",
+      "Mox Jet",
+      "Auntie's Sentence"
+    ],
+    "player2_cards": [
+      "Mana Vault",
+      "Ancient Tomb",
+      "Lodestone Golem"
+    ],
+    "total_nodes": 22,
+    "max_depth": 4
+  },
+  "nodes": {
+    "8f10788a-c414-47c1-bb5b-f74495b53a7f": {
+      "node_id": "8f10788a-c414-47c1-bb5b-f74495b53a7f",
+      "decision": null,
+      "explanation": null,
+      "depth": 0,
+      "is_terminal": false,
+      "outcome": null,
+      "score": 1.0,
+      "viability": null,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 1,
+        "turn_player": "player1",
+        "player_to_act": "player1",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [
+            "Mutavault",
+            "Mox Jet",
+            "Auntie's Sentence"
+          ],
+          "library": [],
+          "graveyard": [],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": []
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Mana Vault",
+            "Ancient Tomb",
+            "Lodestone Golem"
+          ],
+          "library": [],
+          "graveyard": [],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": []
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [
+        "41904aa2-33a2-45a5-90e9-fe1d00111380",
+        "573ac88f-87a0-40b4-9b9d-6af90b23bf99",
+        "e6908cac-93d5-4700-98c0-b8d3186e23b6",
+        "ef693c46-9dd7-40aa-aca7-9cd2f98f5c2b"
+      ],
+      "parent_id": null
+    },
+    "41904aa2-33a2-45a5-90e9-fe1d00111380": {
+      "node_id": "41904aa2-33a2-45a5-90e9-fe1d00111380",
+      "decision": "Play Mox Jet, play Mutavault, and cast Auntie's Sentence choosing Player 2. Choose Lodestone Golem from their hand to be discarded.",
+      "explanation": "This is the optimal play. It removes Player 2's only win condition (Lodestone Golem) before they can cast it. Without the Golem, Player 2 has no way to win, and Player 1 will eventually win by animating Mutavault.",
+      "depth": 1,
+      "is_terminal": false,
+      "outcome": null,
+      "score": 1.0,
+      "viability": 10,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 2,
+        "turn_player": "player2",
+        "player_to_act": "player2",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": true,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": true,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Ancient Tomb",
+            "Mana Vault"
+          ],
+          "library": [],
+          "graveyard": [
+            "Lodestone Golem"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": []
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [
+        "feef2660-b4f3-41de-82ac-503ea2402338",
+        "c6525abf-99d0-4248-80f5-0ba57c6f6e28",
+        "fe1ae076-53c5-4760-a9a9-3dc06d94f1a0"
+      ],
+      "parent_id": "8f10788a-c414-47c1-bb5b-f74495b53a7f"
+    },
+    "573ac88f-87a0-40b4-9b9d-6af90b23bf99": {
+      "node_id": "573ac88f-87a0-40b4-9b9d-6af90b23bf99",
+      "decision": "Play Mox Jet, play Mutavault, and cast Auntie's Sentence choosing Player 2. Choose Mana Vault from their hand to be discarded.",
+      "explanation": "Discarding Mana Vault also wins the game because Player 2 will only have Ancient Tomb for mana (2 mana), which is insufficient to cast the 4-mana Lodestone Golem. However, discarding the threat itself is generally safer.",
+      "depth": 1,
+      "is_terminal": false,
+      "outcome": null,
+      "score": 1.0,
+      "viability": 9,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 2,
+        "turn_player": "player2",
+        "player_to_act": "player2",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": true,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": true,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Ancient Tomb",
+            "Lodestone Golem"
+          ],
+          "library": [],
+          "graveyard": [
+            "Mana Vault"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": []
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [
+        "7f5267f0-f6cb-42e4-914a-1b1349987cb5",
+        "6aeca8b6-cfcd-4316-b339-716906d77ea3",
+        "67ef4b0a-e7a1-4ac1-a8b5-212d02c7d62c"
+      ],
+      "parent_id": "8f10788a-c414-47c1-bb5b-f74495b53a7f"
+    },
+    "e6908cac-93d5-4700-98c0-b8d3186e23b6": {
+      "node_id": "e6908cac-93d5-4700-98c0-b8d3186e23b6",
+      "decision": "Play Mox Jet and Mutavault, then pass the turn without casting Auntie's Sentence.",
+      "explanation": "This decision is poor because it allows Player 2 to cast Lodestone Golem on their turn 1 (via Ancient Tomb and Mana Vault). Once Golem is on the battlefield, Auntie's Sentence will cost 3 mana, and Player 1 will be unable to cast it or use the second mode to kill the Golem.",
+      "depth": 1,
+      "is_terminal": false,
+      "outcome": null,
+      "score": null,
+      "viability": 1,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 2,
+        "turn_player": "player2",
+        "player_to_act": "player2",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [
+            "Auntie's Sentence"
+          ],
+          "library": [],
+          "graveyard": [],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Ancient Tomb",
+            "Lodestone Golem",
+            "Mana Vault"
+          ],
+          "library": [],
+          "graveyard": [],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": []
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "8f10788a-c414-47c1-bb5b-f74495b53a7f"
+    },
+    "ef693c46-9dd7-40aa-aca7-9cd2f98f5c2b": {
+      "node_id": "ef693c46-9dd7-40aa-aca7-9cd2f98f5c2b",
+      "decision": "Pass the turn immediately without making any plays.",
+      "explanation": "This is the worst possible decision as it gives Player 2 full freedom to deploy their threat without establishing any board presence or disruption.",
+      "depth": 1,
+      "is_terminal": false,
+      "outcome": null,
+      "score": null,
+      "viability": 1,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 2,
+        "turn_player": "player2",
+        "player_to_act": "player2",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [
+            "Auntie's Sentence",
+            "Mox Jet",
+            "Mutavault"
+          ],
+          "library": [],
+          "graveyard": [],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": []
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Ancient Tomb",
+            "Lodestone Golem",
+            "Mana Vault"
+          ],
+          "library": [],
+          "graveyard": [],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": []
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "8f10788a-c414-47c1-bb5b-f74495b53a7f"
+    },
+    "feef2660-b4f3-41de-82ac-503ea2402338": {
+      "node_id": "feef2660-b4f3-41de-82ac-503ea2402338",
+      "decision": "Play Ancient Tomb and pass the turn.",
+      "explanation": "This is the most standard development play. Player 2 plays their land for the turn to establish mana for future possibilities while preserving their life total. Since Player 1 has a Mutavault clock, every point of life matters.",
+      "depth": 2,
+      "is_terminal": false,
+      "outcome": null,
+      "score": 1.0,
+      "viability": 10,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 3,
+        "turn_player": "player1",
+        "player_to_act": "player1",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Mana Vault"
+          ],
+          "library": [],
+          "graveyard": [
+            "Lodestone Golem"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Ancient Tomb",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [
+        "1473ca2f-aa4f-45be-b4fc-e0f701e33bc1",
+        "c7da9ff1-be94-484a-9290-be93d952abe9",
+        "22f4e83f-9979-43d1-80ca-e83a9f660c68"
+      ],
+      "parent_id": "41904aa2-33a2-45a5-90e9-fe1d00111380"
+    },
+    "c6525abf-99d0-4248-80f5-0ba57c6f6e28": {
+      "node_id": "c6525abf-99d0-4248-80f5-0ba57c6f6e28",
+      "decision": "Play Ancient Tomb, tap it for {C}{C}, cast Mana Vault, and pass the turn.",
+      "explanation": "While this plays all available cards, it is suboptimal. Tapping Ancient Tomb deals 2 damage to Player 2, and since Lodestone Golem is already in the graveyard, the extra mana from Mana Vault serves no current purpose. This life loss accelerates Player 1's Mutavault clock by one full turn.",
+      "depth": 2,
+      "is_terminal": false,
+      "outcome": null,
+      "score": null,
+      "viability": 2,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 3,
+        "turn_player": "player1",
+        "player_to_act": "player1",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 18,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Lodestone Golem"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Ancient Tomb",
+              "tapped": true,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mana Vault",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "41904aa2-33a2-45a5-90e9-fe1d00111380"
+    },
+    "fe1ae076-53c5-4760-a9a9-3dc06d94f1a0": {
+      "node_id": "fe1ae076-53c5-4760-a9a9-3dc06d94f1a0",
+      "decision": "Pass the turn without playing any cards.",
+      "explanation": "This preserves the life total and hides information (though the hand is known from turn 1). It is slightly worse than playing the land because it doesn't develop the board, but it is better than taking unnecessary damage from Ancient Tomb.",
+      "depth": 2,
+      "is_terminal": false,
+      "outcome": null,
+      "score": 1.0,
+      "viability": 8,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 3,
+        "turn_player": "player1",
+        "player_to_act": "player1",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Ancient Tomb",
+            "Mana Vault"
+          ],
+          "library": [],
+          "graveyard": [
+            "Lodestone Golem"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": []
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [
+        "08135056-707b-4ffa-99b5-e034d2db5105",
+        "d40eafb7-4d3c-42d7-b74a-58f1411e408d",
+        "ed4299ae-b515-426e-8f57-720e962e192b"
+      ],
+      "parent_id": "41904aa2-33a2-45a5-90e9-fe1d00111380"
+    },
+    "7f5267f0-f6cb-42e4-914a-1b1349987cb5": {
+      "node_id": "7f5267f0-f6cb-42e4-914a-1b1349987cb5",
+      "decision": "Play Ancient Tomb and pass the turn to Player 1.",
+      "explanation": "This is the best decision as it develops Player 2's mana base. Although Lodestone Golem remains uncastable with only two mana, having the land on the battlefield is necessary for any future potential play. Passing the turn allows Player 1 to untap their permanents.",
+      "depth": 2,
+      "is_terminal": false,
+      "outcome": null,
+      "score": 1.0,
+      "viability": 10,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 3,
+        "turn_player": "player1",
+        "player_to_act": "player1",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Lodestone Golem"
+          ],
+          "library": [],
+          "graveyard": [
+            "Mana Vault"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Ancient Tomb",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [
+        "2f328369-d958-497f-b5e6-43ad6f4ecf56",
+        "e71d2dc9-f02f-4f77-a95b-fad4a2549980"
+      ],
+      "parent_id": "573ac88f-87a0-40b4-9b9d-6af90b23bf99"
+    },
+    "6aeca8b6-cfcd-4316-b339-716906d77ea3": {
+      "node_id": "6aeca8b6-cfcd-4316-b339-716906d77ea3",
+      "decision": "Pass the turn to Player 1 without playing a land.",
+      "explanation": "This is a suboptimal decision. Holding Ancient Tomb in hand provides no strategic advantage and delays any possibility of casting Lodestone Golem or using mana for potential future interactions.",
+      "depth": 2,
+      "is_terminal": false,
+      "outcome": null,
+      "score": null,
+      "viability": 2,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 3,
+        "turn_player": "player1",
+        "player_to_act": "player1",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Ancient Tomb",
+            "Lodestone Golem"
+          ],
+          "library": [],
+          "graveyard": [
+            "Mana Vault"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": []
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "573ac88f-87a0-40b4-9b9d-6af90b23bf99"
+    },
+    "67ef4b0a-e7a1-4ac1-a8b5-212d02c7d62c": {
+      "node_id": "67ef4b0a-e7a1-4ac1-a8b5-212d02c7d62c",
+      "decision": "Play Ancient Tomb, tap it for {C}{C}, and pass the turn to Player 1.",
+      "explanation": "This is the worst reasonable decision. Tapping Ancient Tomb for mana that cannot be spent results in 2 damage to Player 2 for no gain. Additionally, the land enters Player 1's turn tapped, which is strictly worse than leaving it untapped.",
+      "depth": 2,
+      "is_terminal": false,
+      "outcome": null,
+      "score": null,
+      "viability": 1,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 3,
+        "turn_player": "player1",
+        "player_to_act": "player1",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 18,
+          "hand": [
+            "Lodestone Golem"
+          ],
+          "library": [],
+          "graveyard": [
+            "Mana Vault"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Ancient Tomb",
+              "tapped": true,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "573ac88f-87a0-40b4-9b9d-6af90b23bf99"
+    },
+    "1473ca2f-aa4f-45be-b4fc-e0f701e33bc1": {
+      "node_id": "1473ca2f-aa4f-45be-b4fc-e0f701e33bc1",
+      "decision": "Activate Mutavault's ability using mana from Mox Jet, then attack with Mutavault for 2 damage. Finally, pass the turn to Player 2.",
+      "explanation": "This is the optimal play. Player 1 uses Mox Jet to pay for Mutavault's animation and attacks for 2 damage. Since Player 2 has no creatures or relevant spells, this progresses the game towards a win in 9 more turns. Both Mox Jet and Mutavault remain tapped until Player 1's next untap step.",
+      "depth": 3,
+      "is_terminal": false,
+      "outcome": null,
+      "score": 1.0,
+      "viability": 10,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 4,
+        "turn_player": "player2",
+        "player_to_act": "player2",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": true,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": true,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 18,
+          "hand": [
+            "Mana Vault"
+          ],
+          "library": [],
+          "graveyard": [
+            "Lodestone Golem"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Ancient Tomb",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [
+        "dcc2875a-9f9e-4a8f-9899-3a550d4d953a",
+        "cd045851-6af3-444a-ab11-633ff75d3339"
+      ],
+      "parent_id": "feef2660-b4f3-41de-82ac-503ea2402338"
+    },
+    "c7da9ff1-be94-484a-9290-be93d952abe9": {
+      "node_id": "c7da9ff1-be94-484a-9290-be93d952abe9",
+      "decision": "Pass the turn to Player 2 without taking any actions.",
+      "explanation": "This is a suboptimal play as it does not progress Player 1's goal of reducing the opponent's life to 0. Player 1 misses the opportunity to deal 2 damage while Player 2 has no defenses.",
+      "depth": 3,
+      "is_terminal": false,
+      "outcome": null,
+      "score": null,
+      "viability": 1,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 4,
+        "turn_player": "player2",
+        "player_to_act": "player2",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Mana Vault"
+          ],
+          "library": [],
+          "graveyard": [
+            "Lodestone Golem"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Ancient Tomb",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "feef2660-b4f3-41de-82ac-503ea2402338"
+    },
+    "22f4e83f-9979-43d1-80ca-e83a9f660c68": {
+      "node_id": "22f4e83f-9979-43d1-80ca-e83a9f660c68",
+      "decision": "Activate Mutavault's ability using mana from Mox Jet but do not attack. Pass the turn to Player 2.",
+      "explanation": "This is legal but suboptimal. Player 1 spends mana to animate Mutavault but fails to use it for an attack. Mutavault reverts to being a land at the end of the turn, and Player 2 remains at 20 life. Mox Jet remains tapped.",
+      "depth": 3,
+      "is_terminal": false,
+      "outcome": null,
+      "score": null,
+      "viability": 1,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 4,
+        "turn_player": "player2",
+        "player_to_act": "player2",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": true,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Mana Vault"
+          ],
+          "library": [],
+          "graveyard": [
+            "Lodestone Golem"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Ancient Tomb",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "feef2660-b4f3-41de-82ac-503ea2402338"
+    },
+    "08135056-707b-4ffa-99b5-e034d2db5105": {
+      "node_id": "08135056-707b-4ffa-99b5-e034d2db5105",
+      "decision": "Tap Mox Jet for {B} to activate Mutavault, making it a 2/2 creature, and attack with it. Then end the turn.",
+      "explanation": "This is the optimal play. Since Player 2 has no creatures and no way to interact with the board from their hand, Player 1 should begin the damage clock immediately. Tapping Mox Jet to pay for Mutavault's activation keeps Mutavault untapped and ready to attack.",
+      "depth": 3,
+      "is_terminal": true,
+      "outcome": "player1",
+      "score": 1.0,
+      "viability": 10,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": true,
+      "loop_type": "near",
+      "loop_target_id": "41904aa2-33a2-45a5-90e9-fe1d00111380",
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 4,
+        "turn_player": "player2",
+        "player_to_act": "player2",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": true,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": true,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 18,
+          "hand": [
+            "Ancient Tomb",
+            "Mana Vault"
+          ],
+          "library": [],
+          "graveyard": [
+            "Lodestone Golem"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": []
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "fe1ae076-53c5-4760-a9a9-3dc06d94f1a0"
+    },
+    "d40eafb7-4d3c-42d7-b74a-58f1411e408d": {
+      "node_id": "d40eafb7-4d3c-42d7-b74a-58f1411e408d",
+      "decision": "Pass the turn without taking any actions.",
+      "explanation": "Passing the turn is a legal option but suboptimal as it wastes a turn where Player 1 could have dealt damage with Mutavault. There is no risk in attacking because Player 2 has no blockers and no cards in hand that can disrupt the attack.",
+      "depth": 3,
+      "is_terminal": false,
+      "outcome": null,
+      "score": null,
+      "viability": 2,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 4,
+        "turn_player": "player2",
+        "player_to_act": "player2",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Ancient Tomb",
+            "Mana Vault"
+          ],
+          "library": [],
+          "graveyard": [
+            "Lodestone Golem"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": []
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "fe1ae076-53c5-4760-a9a9-3dc06d94f1a0"
+    },
+    "ed4299ae-b515-426e-8f57-720e962e192b": {
+      "node_id": "ed4299ae-b515-426e-8f57-720e962e192b",
+      "decision": "Tap Mutavault to activate its own ability, then end the turn.",
+      "explanation": "This action is legal but extremely poor. By tapping Mutavault to pay for its own activation cost, the land becomes a creature while already tapped, making it unable to attack or block. This results in the same outcome as passing but with a permanent tapped unnecessarily.",
+      "depth": 3,
+      "is_terminal": false,
+      "outcome": null,
+      "score": null,
+      "viability": 1,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 4,
+        "turn_player": "player2",
+        "player_to_act": "player2",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": true,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Ancient Tomb",
+            "Mana Vault"
+          ],
+          "library": [],
+          "graveyard": [
+            "Lodestone Golem"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": []
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "fe1ae076-53c5-4760-a9a9-3dc06d94f1a0"
+    },
+    "2f328369-d958-497f-b5e6-43ad6f4ecf56": {
+      "node_id": "2f328369-d958-497f-b5e6-43ad6f4ecf56",
+      "decision": "Activate Mutavault using mana from Mox Jet and attack player2 with Mutavault.",
+      "explanation": "Player 1 uses Mox Jet to generate {B} to pay the {1} activation cost of Mutavault. Mutavault becomes a 2/2 creature and attacks player 2 for 2 damage. Since Player 2 has no blockers and cannot cast Lodestone Golem with their current mana, attacking with Mutavault is the best way to progress toward winning the game.",
+      "depth": 3,
+      "is_terminal": false,
+      "outcome": "player1",
+      "score": 1.0,
+      "viability": 10,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 4,
+        "turn_player": "player2",
+        "player_to_act": "player2",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": true,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": true,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 18,
+          "hand": [
+            "Lodestone Golem"
+          ],
+          "library": [],
+          "graveyard": [
+            "Mana Vault"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Ancient Tomb",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [
+        "1a03f5fa-9fef-42ee-b536-0db1c97b10c8"
+      ],
+      "parent_id": "7f5267f0-f6cb-42e4-914a-1b1349987cb5"
+    },
+    "e71d2dc9-f02f-4f77-a95b-fad4a2549980": {
+      "node_id": "e71d2dc9-f02f-4f77-a95b-fad4a2549980",
+      "decision": "Pass the turn to player2 without taking any actions.",
+      "explanation": "Passing the turn fails to pressure Player 2's life total. Since Player 1 has no cards in hand and no other way to win besides combat damage from Mutavault, failing to attack when the opponent has no blockers or interaction is a suboptimal play.",
+      "depth": 3,
+      "is_terminal": false,
+      "outcome": null,
+      "score": null,
+      "viability": 1,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 4,
+        "turn_player": "player2",
+        "player_to_act": "player2",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 20,
+          "hand": [
+            "Lodestone Golem"
+          ],
+          "library": [],
+          "graveyard": [
+            "Mana Vault"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Ancient Tomb",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "7f5267f0-f6cb-42e4-914a-1b1349987cb5"
+    },
+    "dcc2875a-9f9e-4a8f-9899-3a550d4d953a": {
+      "node_id": "dcc2875a-9f9e-4a8f-9899-3a550d4d953a",
+      "decision": "Pass the turn to player 1 without casting any spells.",
+      "explanation": "Passing saves life by not tapping Ancient Tomb. Since Mana Vault does not provide a defensive body or a way to win from this position, preserving life to survive the opponent's Mutavault attacks for as long as possible is the optimal line.",
+      "depth": 4,
+      "is_terminal": true,
+      "outcome": "player1",
+      "score": 1.0,
+      "viability": 10,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": true,
+      "loop_type": "near",
+      "loop_target_id": "feef2660-b4f3-41de-82ac-503ea2402338",
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 5,
+        "turn_player": "player1",
+        "player_to_act": "player1",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 18,
+          "hand": [
+            "Mana Vault"
+          ],
+          "library": [],
+          "graveyard": [
+            "Lodestone Golem"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Ancient Tomb",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "1473ca2f-aa4f-45be-b4fc-e0f701e33bc1"
+    },
+    "cd045851-6af3-444a-ab11-633ff75d3339": {
+      "node_id": "cd045851-6af3-444a-ab11-633ff75d3339",
+      "decision": "Cast Mana Vault using Ancient Tomb for mana, then pass the turn.",
+      "explanation": "Casting Mana Vault costs 2 life from Ancient Tomb's effect and offers no strategic advantage. It accelerates the opponent's clock and uses the only card in hand for no defensive gain.",
+      "depth": 4,
+      "is_terminal": false,
+      "outcome": null,
+      "score": null,
+      "viability": 3,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": false,
+      "loop_type": null,
+      "loop_target_id": null,
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 5,
+        "turn_player": "player1",
+        "player_to_act": "player1",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 16,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Lodestone Golem"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Ancient Tomb",
+              "tapped": true,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mana Vault",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "1473ca2f-aa4f-45be-b4fc-e0f701e33bc1"
+    },
+    "1a03f5fa-9fef-42ee-b536-0db1c97b10c8": {
+      "node_id": "1a03f5fa-9fef-42ee-b536-0db1c97b10c8",
+      "decision": "Pass the turn to Player 1.",
+      "explanation": "Player 2 has no legal or reasonable actions to take. They currently have only 2 mana available from Ancient Tomb, but Lodestone Golem costs 4. Since Mana Vault is already in the graveyard (likely discarded to Player 1's Auntie's Sentence), Player 2 is stuck without enough mana to cast their only win condition. Passing the turn is the only available action, but it does not progress Player 2 toward winning, as Player 1 will eventually win by animating Mutavault.",
+      "depth": 4,
+      "is_terminal": true,
+      "outcome": "player1",
+      "score": 1.0,
+      "viability": 1,
+      "is_transposition": false,
+      "transposition_target_id": null,
+      "is_loop": true,
+      "loop_type": "near",
+      "loop_target_id": "7f5267f0-f6cb-42e4-914a-1b1349987cb5",
+      "loop_hp_totals": null,
+      "is_dead_end": false,
+      "game_state": {
+        "turn_counter": 5,
+        "turn_player": "player1",
+        "player_to_act": "player1",
+        "phase": "precombat_main",
+        "player1": {
+          "life": 20,
+          "hand": [],
+          "library": [],
+          "graveyard": [
+            "Auntie's Sentence"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Mox Jet",
+              "tapped": false,
+              "type_line": "Artifact",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mutavault",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "player2": {
+          "life": 18,
+          "hand": [
+            "Lodestone Golem"
+          ],
+          "library": [],
+          "graveyard": [
+            "Mana Vault"
+          ],
+          "exile": [],
+          "mana_pool": {},
+          "counters": {},
+          "battlefield": [
+            {
+              "name": "Ancient Tomb",
+              "tapped": false,
+              "type_line": "Land",
+              "modifiers": "",
+              "is_token": false,
+              "quantity": 1
+            }
+          ]
+        },
+        "stack": [],
+        "combat_attackers": [],
+        "combat_blockers": {}
+      },
+      "children_ids": [],
+      "parent_id": "2f328369-d958-497f-b5e6-43ad6f4ecf56"
+    }
+  }
+}

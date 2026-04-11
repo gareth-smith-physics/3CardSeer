@@ -245,6 +245,114 @@ class GameTree:
         
         print(f"Expanded node {node.node_id}: created {len(child_nodes)} children from {len(decisions)} decisions")
         return child_nodes
+    
+    def expand_nodes_batch(self, nodes: List[GameTreeNode], gemini_client: GeminiClient, max_children: int = 10) -> Dict[str, List[GameTreeNode]]:
+        """Expand multiple nodes in parallel using batch processing.
+        
+        Args:
+            nodes: List of nodes to expand
+            gemini_client: The Gemini client to use for decision generation
+            max_children: Maximum number of children to create per node
+            
+        Returns:
+            Dictionary mapping node IDs to lists of newly created child nodes
+        """
+        if not nodes:
+            return {}
+        
+        # Filter out nodes that shouldn't be expanded
+        valid_nodes: List[GameTreeNode] = []
+        for node in nodes:
+            if node.is_terminal:
+                print(f"Skipping terminal node {node.node_id}")
+                continue
+            if len(node.children) > 0:
+                print(f"Warning: Node {node.node_id} already has {len(node.children)} children")
+                continue
+            valid_nodes.append(node)
+        
+        if not valid_nodes:
+            print("No valid nodes to expand")
+            return {}
+        
+        # Prepare batch input for Gemini
+        batch_input = []
+        for node in valid_nodes:
+            batch_input.append((node.game_state, self.player1_cards, self.player2_cards))
+        
+        print(f"Expanding {len(valid_nodes)} nodes in parallel...")
+        
+        # Generate decisions in batch
+        try:
+            batch_decisions = gemini_client.generate_decisions_batch(batch_input)
+        except Exception as e:
+            print(f"Error in batch expansion: {e}")
+            print("Falling back to sequential expansion...")
+            # Fallback to sequential processing
+            return self._expand_nodes_sequential(valid_nodes, gemini_client, max_children)
+        
+        # Process results and create child nodes
+        results = {}
+        for i, (node, decisions) in enumerate(zip(valid_nodes, batch_decisions)):
+            if not decisions:
+                print(f"No decisions generated for node {node.node_id}")
+                results[node.node_id] = []
+                continue
+            
+            # Limit the number of children
+            decisions = decisions[:max_children]
+            
+            # Create child nodes for each decision
+            child_nodes = []
+            seen_states = set()
+            
+            for decision in decisions:
+                print(f"Processing decision for node {node.node_id} with viability {decision['viability']}: {decision['decision'][:50]}...")
+
+                # Parse the resulting game state from the decision
+                resulting_state_dict = decision.get("resulting_game_state", {})
+                
+                # Create a new GameState from the dictionary
+                new_game_state = GameState.from_dict(resulting_state_dict)
+                
+                # Validate that player_to_act has properly swapped to the other player
+                current_player_to_act = node.game_state.player_to_act
+                new_player_to_act = new_game_state.player_to_act
+                
+                if current_player_to_act == new_player_to_act:
+                    print(f"Invalid game state for node {node.node_id}: player_to_act did not swap")
+                    print(f"Skipping decision: {decision['decision']}")
+                    continue
+                    
+                # Check if this game state is a duplicate
+                state_hash = hash(new_game_state)
+                if state_hash in seen_states:
+                    print(f"Skipping duplicate game state for node {node.node_id}")
+                    continue
+                seen_states.add(state_hash)
+                
+                # Create child node
+                child_node = self.add_node(
+                    parent_node=node,
+                    new_game_state=new_game_state,
+                    decision=decision.get("decision", "Unknown action"),
+                    viability=decision.get("viability"),
+                    explanation=decision.get("explanation")
+                )
+                
+                child_nodes.append(child_node)
+            
+            print(f"Expanded node {node.node_id}: created {len(child_nodes)} children from {len(decisions)} decisions")
+            results[node.node_id] = child_nodes
+        
+        return results
+    
+    def _expand_nodes_sequential(self, nodes: List[GameTreeNode], gemini_client: GeminiClient, max_children: int = 10) -> Dict[str, List[GameTreeNode]]:
+        """Fallback method for sequential node expansion."""
+        results = {}
+        for node in nodes:
+            results[node.node_id] = self.expand_node(node, gemini_client, max_children)
+        return results
             
     def save_to_file(self, filepath: str) -> None:
         """Save the game tree to a JSON file."""

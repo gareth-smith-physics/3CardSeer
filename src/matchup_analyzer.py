@@ -21,6 +21,7 @@ class AnalysisConfig:
     max_nodes: int = 500  # Maximum total nodes to prevent memory issues
     max_branches_per_node: int = 8  # Maximum branches to consider per node
     analysis_timeout: int = 3000  # Maximum analysis time in seconds
+    n_threads: int = 8  # Number of threads for parallel node expansion
 
 
 @dataclass
@@ -43,7 +44,7 @@ class AutoTreeAnalyzer:
     
     def __init__(self, config: AnalysisConfig):
         self.config = config
-        self.gemini_client = create_gemini_client()
+        self.gemini_client = create_gemini_client(max_workers=config.n_threads)
         self.tree_manager = TreeManager()
         self.matchup_name = "auto_analysis"
         
@@ -135,27 +136,57 @@ class AutoTreeAnalyzer:
         return result
     
     def _populate_tree(self, tree: GameTree, starting_player: str):
-        """Populate the game tree using greedy expansion."""
-        nodes_to_expand = deque([tree.root])
+        """Populate the game tree using batch expansion."""
+
+        # Recover nodes to expand from previous run if available
+        nodes_to_expand = deque()
+        if len(tree.root.children)==0:
+            nodes_to_expand.append(tree.root)
+        else:
+            for node in tree.nodes.values():
+                if len(node.children)>0:
+                    if any([child.viability >= self.config.viability_threshold for child in node.children]):
+                        for child in node.children:
+                            if child.viability >= self.config.viability_threshold and len(child.children) == 0 and not child.is_terminal:
+                                nodes_to_expand.append(child)
+                    else:
+                        max_viability = max([child.viability for child in node.children])
+                        for child in node.children:
+                            if child.viability==max_viability and len(child.children) == 0 and not child.is_terminal:
+                                nodes_to_expand.append(child)
+
         expanded_nodes = set()
+        batch_size = self.config.n_threads  # Use n_threads as batch size
         
         while nodes_to_expand and tree.total_nodes < self.config.max_nodes:
-            current_node = nodes_to_expand.popleft()
+            # Collect a batch of nodes to expand
+            batch_nodes = []
+            while len(batch_nodes) < batch_size and nodes_to_expand and tree.total_nodes < self.config.max_nodes:
+                current_node = nodes_to_expand.popleft()
+                if current_node.node_id not in expanded_nodes:
+                    batch_nodes.append(current_node)
             
-            print(f"\n   {len(expanded_nodes)} expanded, {len(nodes_to_expand)} nodes to expand")
-            print(f"   Expanding node at depth {current_node.depth} (viability: {current_node.viability})")
+            if not batch_nodes:
+                break
             
-            # Expand the node
-            children = tree.expand_node(current_node, self.gemini_client, self.config.max_branches_per_node)
-            expanded_nodes.add(current_node.node_id)
-
-            if current_node.depth+1 >= self.config.max_depth:
-                print(f"   Reached max depth, stopping expansion")
-            else:
+            print(f"\n   {len(expanded_nodes)} expanded, {len(batch_nodes)} in current batch, {len(nodes_to_expand)} nodes remain in queue")
+            print(f"   Expanding batch of {len(batch_nodes)} nodes...")
+            
+            # Expand nodes in batch
+            batch_results = tree.expand_nodes_batch(batch_nodes, self.gemini_client, self.config.max_branches_per_node)
+            
+            # Mark nodes as expanded and process results
+            for node in batch_nodes:
+                expanded_nodes.add(node.node_id)
+                children = batch_results.get(node.node_id, [])
                 
+                if node.depth+1 >= self.config.max_depth:
+                    print(f"   Node {node.node_id} reached max depth, stopping expansion")
+                    continue
+                    
                 # Add viable children to expansion queue
+                viable_children_added = 0
                 for child in children:
-
                     # Check viability threshold
                     if (child.viability < self.config.viability_threshold):
                         continue
@@ -165,18 +196,18 @@ class AutoTreeAnalyzer:
                         continue
                 
                     nodes_to_expand.append(child)
+                    viable_children_added += 1
 
                 # If no viable children were added, stop expanding
-                if len(children)>0 and not any([child.viability >= self.config.viability_threshold for child in children]):
-                    print(f"   Children but none viable, expanding most viable node anyway")
+                if len(children)>0 and viable_children_added == 0:
+                    print(f"   Node {node.node_id} has children but none viable, expanding most viable node anyway")
                     # Expand the most viable nodes
                     max_viability = max([child.viability for child in children])
                     for child in children:
                         if child.viability==max_viability and not child.is_terminal:
                             nodes_to_expand.append(child)
-                    
 
-            # Save tree after every expansion
+            # Save tree after every batch expansion
             self.tree_manager.save_tree(tree, f"{self.matchup_name}_{starting_player}")
     
     def _load_tree(self, tree_name: str) -> Optional[GameTree]:

@@ -3,10 +3,13 @@
 import google.genai as genai
 import json
 import os
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import asdict
 from dotenv import load_dotenv
 import time
+import concurrent.futures
+import threading
+from queue import Queue
 
 from .game_state import GameState
 from .card_data import Card
@@ -19,7 +22,7 @@ load_dotenv()
 class GeminiClient:
     """Client for interacting with Google Gemini 3.0 API."""
     
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self, api_key: Optional[str] = None, max_workers: int = 8):
         self.api_key = api_key or os.getenv('GEMINI_API_KEY')
         if not self.api_key:
             raise ValueError("Gemini API key not found. Please set GEMINI_API_KEY environment variable.")
@@ -27,24 +30,30 @@ class GeminiClient:
         self.client = genai.Client(api_key=self.api_key)
         self.rate_limit_delay = 1.0  # 1 second between requests
         self.last_request_time = 0
+        self.max_workers = max_workers
+        self._request_lock = threading.Lock()
+        self._request_queue = Queue()
+        self._rate_limiter_thread = None
+        self._stop_rate_limiter = False
     
     def _make_request(self, prompt: str) -> str:
         """Make a rate-limited request to the Gemini API."""
-        current_time = time.time()
-        time_since_last = current_time - self.last_request_time
-        
-        if time_since_last < self.rate_limit_delay:
-            time.sleep(self.rate_limit_delay - time_since_last)
-        
-        try:
-            response = self.client.models.generate_content(
-                model=self.model_name,
-                contents=prompt
-            )
-            self.last_request_time = time.time()
-            return response.text
-        except Exception as e:
-            raise RuntimeError(f"Gemini API request failed: {e}")
+        with self._request_lock:
+            current_time = time.time()
+            time_since_last = current_time - self.last_request_time
+            
+            if time_since_last < self.rate_limit_delay:
+                time.sleep(self.rate_limit_delay - time_since_last)
+            
+            try:
+                response = self.client.models.generate_content(
+                    model=self.model_name,
+                    contents=prompt
+                )
+                self.last_request_time = time.time()
+                return response.text
+            except Exception as e:
+                raise RuntimeError(f"Gemini API request failed: {e}")
     
     def generate_decisions(self, game_state: GameState, player1_cards: List[Card], player2_cards: List[Card]) -> List[Dict[str, Any]]:
         """Generate possible decisions for the current game state."""
@@ -56,6 +65,31 @@ class GeminiClient:
         except Exception as e:
             print(f"Error generating decisions: {e}")
             return []
+    
+    def generate_decisions_batch(self, game_states: List[Tuple[GameState, List[Card], List[Card]]]) -> List[List[Dict[str, Any]]]:
+        """Generate decisions for multiple game states in parallel.
+        
+        Args:
+            game_states: List of tuples containing (game_state, player1_cards, player2_cards)
+            
+        Returns:
+            List of decision lists, one for each input game state
+        """
+        if not game_states:
+            return []
+        
+        def process_single_game_state(args):
+            game_state, player1_cards, player2_cards = args
+            return self.generate_decisions(game_state, player1_cards, player2_cards)
+        
+        try:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+                results = list(executor.map(process_single_game_state, game_states))
+            return results
+        except Exception as e:
+            print(f"Error in batch processing: {e}")
+            # Fallback to sequential processing
+            return [process_single_game_state(args) for args in game_states]
     
     def _create_decision_prompt(self, game_state: GameState, player1_cards: List[Card], player2_cards: List[Card]) -> str:
         """Create a prompt for the Gemini model to generate decisions."""
@@ -176,6 +210,6 @@ class GeminiClient:
         return True
 
 
-def create_gemini_client() -> GeminiClient:
+def create_gemini_client(max_workers: int = 8) -> GeminiClient:
     """Create a configured Gemini client."""
-    return GeminiClient()
+    return GeminiClient(max_workers=max_workers)

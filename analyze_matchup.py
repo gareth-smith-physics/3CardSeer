@@ -37,6 +37,8 @@ To see available analysis settings:
                        help="Maximum branches per node")
     parser.add_argument("--timeout", type=int, default=defaults.analysis_timeout,
                        help="Analysis timeout in seconds")
+    parser.add_argument("--n-threads", type=int, default=defaults.n_threads,
+                       help="Number of threads for parallel node expansion")
     parser.add_argument("--verbose", action="store_true",
                        help="Enable verbose output")
     parser.add_argument("--matchup-name", required=True,
@@ -63,7 +65,8 @@ To see available analysis settings:
         max_depth=args.max_depth,
         max_nodes=args.max_nodes,
         max_branches_per_node=args.max_branches,
-        analysis_timeout=args.timeout
+        analysis_timeout=args.timeout,
+        n_threads=args.n_threads
     )
     
     # Create cards using Scryfall API (only if not loading tree)

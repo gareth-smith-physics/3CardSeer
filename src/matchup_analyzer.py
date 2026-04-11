@@ -149,6 +149,7 @@ class AutoTreeAnalyzer:
                 current_node.viability < self.config.viability_threshold):
                 continue
             
+            print(f"\n   {len(expanded_nodes)} expanded, {len(nodes_to_expand)} nodes to expand")
             print(f"   Expanding node at depth {current_node.depth} (viability: {current_node.viability})")
             
             # Expand the node

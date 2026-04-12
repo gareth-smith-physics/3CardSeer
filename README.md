@@ -261,3 +261,5 @@ The game tree is constructed by recursively exploring game states from the initi
 - A node has the same game state as another node in a different branch (a transposition). The node score is copied from the other node.
 - A node has has the same game state as a previous node in its own branch (a loop). The node is scored as a tie.
 - A node has the same game state as a previous node, except for life totals. In this case, the loop is continued until at least one life total reaches 0, and the node is scored as a W, L or tie.
+
+Furthermore, alpha-beta pruning is used to avoid expanding nodes which are not critical path.

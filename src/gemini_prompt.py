@@ -70,7 +70,8 @@ Return a JSON array of decisions. Each decision should have this structure:
       "battlefield": [{{"name": "card_name", "tapped": boolean, "type_line": "string", "modifiers": "string", "is_token": boolean, "quantity": number, "summoning_sick": boolean, "damage": number, "power": number, "toughness": number}}],
       "graveyard": ["card_names"],
       "mana_pool": {{"color": number}},
-      "counters": {{"poison": number, "other": number}}
+      "counters": {{"poison": number, "other": number}},
+      "has_won": boolean
     }},
     "player2": {{same structure as player1}},
     "stack": [],
@@ -101,6 +102,10 @@ TURN PROGRESSION RULES:
 The phase should be chosen from the following options: "untap", "upkeep", "draw", "precombat_main", "combat_begin", "combat_declare_attackers",
       "combat_declare_blockers", "combat_damage", "combat_end", "postcombat_main", "end", "cleanup".
 Set this phase according to the next phase that will require a decision from the opponent.
+
+The "has_won" field should ONLY be set to true if the game has ended via the resolution of an effect which directly wins the game,
+such as the resolution of the Thassa's Oracle ability.
+Do not set "has_won" to true in any other scenarios.
 
 VERY IMPORTANT:
 - Be very careful about which permanents are tapped in the final state.

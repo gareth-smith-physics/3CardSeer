@@ -174,7 +174,7 @@ class GeminiClient:
         # Validate player state structure
         for player_key in ["player1", "player2"]:
             player_state = game_state[player_key]
-            required_player_fields = ["life", "hand", "battlefield", "graveyard", "mana_pool", "counters"]
+            required_player_fields = ["life", "hand", "battlefield", "graveyard", "mana_pool", "counters", "has_won"]
             
             for field in required_player_fields:
                 if field not in player_state:

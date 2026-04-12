@@ -105,6 +105,7 @@ class PlayerState:
     battlefield: List[Permanent] = field(default_factory=list)
     mana_pool: Dict[str, int] = field(default_factory=dict)
     counters: Dict[str, int] = field(default_factory=dict)
+    has_won: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert the player state to a dictionary for API calls."""
@@ -116,7 +117,8 @@ class PlayerState:
             "exile": [card.name for card in self.exile],
             "mana_pool": self.mana_pool,
             "counters": self.counters,
-            "battlefield": [perm.to_dict() for perm in self.battlefield]
+            "battlefield": [perm.to_dict() for perm in self.battlefield],
+            "has_won": self.has_won
         }
 
     @classmethod
@@ -130,7 +132,8 @@ class PlayerState:
             exile=[Card.from_name(name) for name in data.get('exile', [])],
             battlefield=[Permanent.from_dict(perm_data, controller=player_name) for perm_data in data.get('battlefield', [])],
             mana_pool=data.get('mana_pool', {}),
-            counters=data.get('counters', {})
+            counters=data.get('counters', {}),
+            has_won=data.get('has_won', False)
         )
         
 
@@ -149,12 +152,14 @@ class GameState:
     def has_p1_lost(self) -> bool:
         """Check if player 1 has lost the game."""
         return (self.player1_state.life <= 0 or 
-                ('poison' in self.player1_state.counters.keys() and self.player1_state.counters['poison'] >= 10))
+                ('poison' in self.player1_state.counters.keys() and self.player1_state.counters['poison'] >= 10)
+                or self.player2_state.has_won)
     
     def has_p2_lost(self) -> bool:
         """Check if player 2 has lost the game."""
         return (self.player2_state.life <= 0 or 
-                ('poison' in self.player2_state.counters.keys() and self.player2_state.counters['poison'] >= 10))
+                ('poison' in self.player2_state.counters.keys() and self.player2_state.counters['poison'] >= 10)
+                or self.player1_state.has_won)
     
     def is_game_over(self) -> bool:
         """Check if the game has ended."""

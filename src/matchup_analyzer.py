@@ -39,6 +39,7 @@ class AnalysisResult:
     max_depth: int
     analysis_time: float
     terminal_nodes_by_outcome: Dict[str, int]
+    remaining_nodes_to_expand: int
 
 
 class AutoTreeAnalyzer:
@@ -121,6 +122,8 @@ class AutoTreeAnalyzer:
             for node in tree.terminal_nodes:
                 if node.outcome:
                     terminal_counts[node.outcome] += 1
+
+        remaining_nodes = self._count_remaining_nodes_to_expand(trees["player1"]) + self._count_remaining_nodes_to_expand(trees["player2"])
         
         result = AnalysisResult(
             player1_cards=[card.name for card in p1_cards],
@@ -132,7 +135,8 @@ class AutoTreeAnalyzer:
             total_nodes=total_nodes,
             max_depth=max_depth,
             analysis_time=analysis_time,
-            terminal_nodes_by_outcome=terminal_counts
+            terminal_nodes_by_outcome=terminal_counts,
+            remaining_nodes_to_expand=remaining_nodes
         )
         
         self._print_results(result)
@@ -426,12 +430,36 @@ class AutoTreeAnalyzer:
         else:
             raise ValueError(f"Invalid scores: p1_score={p1_score}, p2_score={p2_score}")
 
+    def _count_remaining_nodes_to_expand(self, tree: GameTree) -> int:
+        """Count the remaining nodes which should be expanded."""
+        count = 0
+        for node in tree.nodes.values():
+            if node.is_terminal:
+                continue
+            if len(node.children)!=0:
+                continue
+            if node.alpha_beta_skip:
+                continue
+            if node.viability>=self.config.viability_threshold:
+                count += 1
+                continue
+            if node.parent is not None:
+                max_viability = max([child.viability for child in node.parent.children])
+                if max_viability < self.config.viability_threshold and node.viability==max_viability:
+                    count += 1
+                    continue
+        return count
     
     def _print_results(self, result: AnalysisResult):
         """Print the analysis results."""
         print("\n" + "="*60)
         print("ANALYSIS RESULTS")
         print("="*60)
+
+        if result.remaining_nodes_to_expand==0:
+            print("\nAnalysis complete! No further nodes to expand ✅")
+        else:
+            print(f"\nAnalysis still incomplete. {result.remaining_nodes_to_expand} nodes remaining to expand {"❌"*result.remaining_nodes_to_expand}")
         
         print(f"\nPlayer 1 cards: {result.player1_cards}")
         print(f"Player 2 cards: {result.player2_cards}")

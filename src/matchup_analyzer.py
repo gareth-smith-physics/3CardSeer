@@ -181,7 +181,6 @@ class AutoTreeAnalyzer:
                 expanded_nodes.add(node.node_id)
                 children_to_expand = self._get_children_to_expand(node)
                 nodes_to_expand.extend(children_to_expand)
-                viable_children_added += len(children_to_expand)
 
             # After each batch, recalculate scores and propagate using minimax
             print("Clearing, recalculating, and repropagating node scores")

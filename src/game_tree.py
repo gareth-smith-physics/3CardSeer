@@ -329,7 +329,7 @@ class GameTree:
             seen_states = set()
             
             for decision in decisions:
-                print(f"----> Option: {decision['decision'][:50]}...")
+                print(f"------> Option: {decision['decision']}")
 
                 # Parse the resulting game state from the decision
                 resulting_state_dict = decision.get("resulting_game_state", {})

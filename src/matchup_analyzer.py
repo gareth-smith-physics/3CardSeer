@@ -80,15 +80,14 @@ class AutoTreeAnalyzer:
                 trees[starting_player] = tree
 
             if not skip_population:
-                self._populate_tree(tree, starting_player)
-                print(f"   Tree populated: {tree.total_nodes} nodes, max depth {tree.max_depth}")
+                self._populate_and_analyze_tree(tree, starting_player)
+                print(f"   Tree populated and analyzed: {tree.total_nodes} nodes, max depth {tree.max_depth}")
+            else:
+                # If skipping population, still need to analyze the loaded tree
+                self._analyze_current_tree_state(tree)
 
-        # Clear scores and outcomes from trees before analysis
-        for tree in trees.values():
-            self._clear_tree_scores_and_outcomes(tree)
-
-        # Analyze both trees
-        print("\nAnalyzing optimal play...")
+        # Final analysis to compute optimal paths
+        print("\nComputing optimal paths...")
         p1_result = self._analyze_tree(trees["player1"])
         p2_result = self._analyze_tree(trees["player2"])
 
@@ -135,8 +134,8 @@ class AutoTreeAnalyzer:
         self._print_results(result)
         return result
     
-    def _populate_tree(self, tree: GameTree, starting_player: str):
-        """Populate the game tree using batch expansion."""
+    def _populate_and_analyze_tree(self, tree: GameTree, starting_player: str):
+        """Populate the game tree using batch expansion with integrated analysis."""
 
         # Recover nodes to expand from previous run if available
         nodes_to_expand = deque()
@@ -207,6 +206,11 @@ class AutoTreeAnalyzer:
                         if child.viability==max_viability and not child.is_terminal:
                             nodes_to_expand.append(child)
 
+            # After each batch, recalculate scores and propagate using minimax
+            print("Clearing, recalculating, and repropagating node scores")
+            self._clear_tree_scores(tree)
+            self._analyze_current_tree_state(tree)
+
             # Save tree after every batch expansion
             self.tree_manager.save_tree(tree, f"{self.matchup_name}_{starting_player}")
     
@@ -219,27 +223,28 @@ class AutoTreeAnalyzer:
             print(f"   Error loading tree: {e}")
             return None
     
-    def _clear_tree_scores_and_outcomes(self, tree: GameTree):
-        """Clear all scores and outcomes from all nodes in the tree."""
+    def _clear_tree_scores(self, tree: GameTree):
+        """Clear all scores from all nodes in the tree."""
         for node_id in tree.nodes:
             node = tree.nodes[node_id]
             node.score = None
-            node.outcome = None
     
-    def _analyze_tree(self, tree: GameTree) -> Dict:
-        """Analyze a tree using minimax to determine optimal play."""
+    def _analyze_current_tree_state(self, tree: GameTree):
+        """Analyze the current tree state by assigning scores and propagating with minimax."""
         # Assign outcomes to loop nodes
         for node in tree.terminal_nodes:
-            if node.is_loop:
+            if node.is_loop and node.outcome is None:
                 node.outcome, node.loop_hp_totals = self._determine_loop_outcome(node)
                 print(f"Loop outcome ({node.loop_type}): {node.outcome}")
+        
         # Assign scores to terminal nodes
         for node in tree.terminal_nodes:
             if node.score is None:
                 node.score = self._assign_terminal_score(node)
+        
         # Assign scores and outcomes to transposition nodes
         for node in tree.terminal_nodes:
-            if node.is_transposition:
+            if node.is_transposition and node.score is None:
                 id = node.transposition_target_id
                 # Find the node with the same transposition_target_id and use its score
                 for other_node in tree.terminal_nodes:
@@ -250,6 +255,11 @@ class AutoTreeAnalyzer:
 
         # Propagate scores up the tree using minimax
         self._minimax(tree.root)
+    
+    def _analyze_tree(self, tree: GameTree) -> Dict:
+        """Final analysis of a completed tree to determine optimal play."""
+        # Ensure all terminal nodes are analyzed
+        self._analyze_current_tree_state(tree)
         
         # Find the optimal path
         optimal_path = self._find_optimal_path(tree.root)

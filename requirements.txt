@@ -4,3 +4,4 @@ python-dotenv
 dataclasses-json
 typing-extensions
 Pillow
+ratelimit

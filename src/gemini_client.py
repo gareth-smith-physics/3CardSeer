@@ -4,12 +4,10 @@ import google.genai as genai
 import json
 import os
 from typing import List, Dict, Any, Optional, Tuple
-from dataclasses import asdict
 from dotenv import load_dotenv
-import time
 import concurrent.futures
 import threading
-from queue import Queue
+from ratelimit import limits, sleep_and_retry
 
 from .game_state import GameState
 from .card_data import Card
@@ -28,36 +26,28 @@ class GeminiClient:
             raise ValueError("Gemini API key not found. Please set GEMINI_API_KEY environment variable.")
         self.model_name = os.getenv('MODEL_NAME', 'gemini-flash-latest')
         self.client = genai.Client(api_key=self.api_key)
-        self.rate_limit_delay = 1.0  # 1 second between requests
-        self.last_request_time = 0
         self.max_workers = max_workers
         self._request_lock = threading.Lock()
-        self._request_queue = Queue()
-        self._rate_limiter_thread = None
-        self._stop_rate_limiter = False
     
+    @sleep_and_retry
+    @limits(calls=1, period=0.2)
     def _make_request(self, prompt: str) -> str:
         """Make a rate-limited request to the Gemini API."""
-        with self._request_lock:
-            current_time = time.time()
-            time_since_last = current_time - self.last_request_time
-            
-            if time_since_last < self.rate_limit_delay:
-                time.sleep(self.rate_limit_delay - time_since_last)
-            
-            try:
-                response = self.client.models.generate_content(
-                    model=self.model_name,
-                    contents=prompt
-                )
-                self.last_request_time = time.time()
-                return response.text
-            except Exception as e:
-                raise RuntimeError(f"Gemini API request failed: {e}")
+        print(f"   Making request")
+                
+        try:
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=prompt
+            )
+            return response.text
+        except Exception as e:
+            raise RuntimeError(f"Gemini API request failed: {e}")
     
     def generate_decisions(self, game_state: GameState, player1_cards: List[Card], player2_cards: List[Card]) -> List[Dict[str, Any]]:
         """Generate possible decisions for the current game state."""
         prompt = self._create_decision_prompt(game_state, player1_cards, player2_cards)
+        print(f"Generating decisions for game state (turn {game_state.turn_counter})")
         
         try:
             response = self._make_request(prompt)

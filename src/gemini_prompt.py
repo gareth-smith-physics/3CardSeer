@@ -98,6 +98,10 @@ TURN PROGRESSION RULES:
 - If this involves ending a phase, make sure to advance to the next appropriate phase.
 - The player_to_act should always be flipped in the resulting game state, to represent that the next decision will be made by the other player.
 
+The phase should be chosen from the following options: "untap", "upkeep", "draw", "precombat_main", "combat_begin", "combat_declare_attackers",
+      "combat_declare_blockers", "combat_damage", "combat_end", "postcombat_main", "end", "cleanup".
+Set this phase according to the next phase that will require a decision from the opponent.
+
 VERY IMPORTANT:
 - Be very careful about which permanents are tapped in the final state.
 - Lands must tap for mana to cast spells and activate abilities that have a mana cost.

@@ -22,6 +22,8 @@ class AnalysisConfig:
     max_branches_per_node: int = 8  # Maximum branches to consider per node
     analysis_timeout: int = 3000  # Maximum analysis time in seconds
     n_threads: int = 16  # Number of threads for parallel node expansion
+    dry_run: bool = False  # If True, skip Gemini API calls
+    verbose: bool = False  # Enable verbose output
 
 
 @dataclass
@@ -44,7 +46,7 @@ class AutoTreeAnalyzer:
     
     def __init__(self, config: AnalysisConfig):
         self.config = config
-        self.gemini_client = create_gemini_client(max_workers=config.n_threads)
+        self.gemini_client = create_gemini_client(max_workers=config.n_threads, dry_run=config.dry_run)
         self.tree_manager = TreeManager()
         self.matchup_name = "auto_analysis"
         
@@ -58,6 +60,8 @@ class AutoTreeAnalyzer:
         print(f"   Viability threshold: {self.config.viability_threshold}")
         print(f"   Max depth: {self.config.max_depth}")
         print()
+        print("To analyze this matchup manually, run:")
+        print(f"python analyze_matchup.py '{p1_cards[0].name_sanitized()}' '{p1_cards[1].name_sanitized()}' '{p1_cards[2].name_sanitized()}' '{p2_cards[0].name_sanitized()}' '{p2_cards[1].name_sanitized()}' '{p2_cards[2].name_sanitized()}' --matchup-name '{self.matchup_name}' --load-tree")
 
         # Create or load game trees for both starting players
         trees: Dict[str, GameTree] = {}
@@ -156,7 +160,6 @@ class AutoTreeAnalyzer:
         while nodes_to_expand and tree.total_nodes < self.config.max_nodes:
 
             # Before each batch, recalculate scores and propagate using minimax
-            print("Clearing, recalculating, and repropagating node scores")
             self._clear_tree_scores(tree)
             self._analyze_current_tree_state(tree)
 
@@ -183,7 +186,6 @@ class AutoTreeAnalyzer:
                 nodes_to_expand.extend(children_to_expand)
 
             # After each batch, recalculate scores and propagate using minimax
-            print("Clearing, recalculating, and repropagating node scores")
             self._clear_tree_scores(tree)
             self._analyze_current_tree_state(tree)
 
@@ -211,7 +213,8 @@ class AutoTreeAnalyzer:
         for node in tree.terminal_nodes:
             if node.is_loop and node.outcome is None:
                 node.outcome, node.loop_hp_totals = self._determine_loop_outcome(node)
-                print(f"Loop outcome ({node.loop_type}): {node.outcome}")
+                if self.config.verbose:
+                    print(f"Loop outcome ({node.loop_type}): {node.outcome}")
         
         # Assign scores to terminal nodes
         for node in tree.terminal_nodes:
@@ -254,7 +257,8 @@ class AutoTreeAnalyzer:
             current_node = node
             p1_hp = [current_node.game_state.player1_state.life]
             p2_hp = [current_node.game_state.player2_state.life]
-            print(f"Loop detected at node {node.node_id}, loop target: {node.loop_target_id}")
+            if self.config.verbose:
+                print(f"Loop detected at node {node.node_id}, loop target: {node.loop_target_id}")
             while current_node.node_id != node.loop_target_id:
                 if current_node.parent is None:
                     raise ValueError("Loop detected but loop target not in lineage")
@@ -266,13 +270,14 @@ class AutoTreeAnalyzer:
             p1_hp_total = p1_hp[0]
             p2_hp_total = p2_hp[0]
             loop_life_totals = [(p1_hp_total, p2_hp_total)]
-            print(f"Damage incremenets - p1: {p1_damage_increments} | p2: {p2_damage_increments}")
+            if self.config.verbose:
+                print(f"Damage incremenets - p1: {p1_damage_increments} | p2: {p2_damage_increments}")
             for i in range(1000):
                 ii = i % len(p1_damage_increments)
                 p1_hp_total += p1_damage_increments[ii]
                 p2_hp_total += p2_damage_increments[ii]
                 loop_life_totals.append((p1_hp_total, p2_hp_total))
-                if i < 10:
+                if self.config.verbose and i < 10:
                     print(f"p1: {p1_hp_total} | p2: {p2_hp_total}")
                 if p1_hp_total <= 0 or p2_hp_total <= 0:
                     break
@@ -302,6 +307,17 @@ class AutoTreeAnalyzer:
         
         current_player = node.game_state.player_to_act
         n_children = len(node.children)
+
+        # If there is a winning move, take it
+        for child in node.children:
+            if (current_player == "player1" and child.score == 1.0) or (current_player == "player2" and child.score == -1.0):
+                node.score = child.score
+                for other_child in node.children:
+                    if other_child.node_id != child.node_id:
+                        if self.config.verbose:
+                            print(f"Skipping child as a better child was found: {other_child.decision}")
+                        other_child.mark_alpha_beta_skip()
+                return node.score
         
         if current_player == "player1":
             # Player 1 wants to maximize the score
@@ -340,14 +356,17 @@ class AutoTreeAnalyzer:
     
     def _get_children_to_expand(self, node: GameTreeNode) -> List[GameTreeNode]:
         """Get the children that should be expanded."""
+
+        # Skip terminal or expanded nodes, max depth cap
         if node.is_terminal or len(node.children) == 0 or node.depth+1 >= self.config.max_depth:
             return []
 
         # First filter by viability
         potential_children_to_expand = [child for child in node.children if child.viability >= self.config.viability_threshold]
         if len(potential_children_to_expand)==0:
-            print("Node has children but none over viability threshold. Picking the most viable...")
-            print([child.viability for child in node.children])
+            if self.config.verbose:
+                print("Node has children but none over viability threshold. Picking the most viable...")
+                print([child.viability for child in node.children])
             max_viability = max([child.viability for child in node.children])
             for child in node.children:
                 if child.viability==max_viability and not child.is_terminal:
@@ -356,11 +375,16 @@ class AutoTreeAnalyzer:
         # Then filter by alpha-beta bounds, grandchildren, and terminality
         children_to_expand = []
         for child in potential_children_to_expand:
-            if not child.is_terminal and len(child.children)==0 and not child.alpha_beta_skip:
-                children_to_expand.append(child)
+            if child.is_terminal:
+                continue
+            if len(child.children)!=0:
+                continue
+            if child.alpha_beta_skip:
+                continue
+            children_to_expand.append(child)
                 
         return children_to_expand
-    
+
     def _find_optimal_path(self, node: GameTreeNode) -> List[GameTreeNode]:
         """Find the optimal path from root to terminal node."""
         path = [node]

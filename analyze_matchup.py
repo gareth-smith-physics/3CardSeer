@@ -47,6 +47,8 @@ To see available analysis settings:
                        help="Load tree from file instead of creating new one")
     parser.add_argument("--skip-population", action="store_true",
                        help="Skip tree population and analyze existing tree only")
+    parser.add_argument("--dry-run", action="store_true",
+                       help="Dry run, don't make any API calls")
     
     args = parser.parse_args()
     
@@ -66,7 +68,9 @@ To see available analysis settings:
         max_nodes=args.max_nodes,
         max_branches_per_node=args.max_branches,
         analysis_timeout=args.timeout,
-        n_threads=args.n_threads
+        n_threads=args.n_threads,
+        dry_run=args.dry_run,
+        verbose=args.verbose
     )
     
     # Create cards using Scryfall API (only if not loading tree)

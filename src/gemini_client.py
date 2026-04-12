@@ -20,7 +20,7 @@ load_dotenv()
 class GeminiClient:
     """Client for interacting with Google Gemini 3.0 API."""
     
-    def __init__(self, api_key: Optional[str] = None, max_workers: int = 8):
+    def __init__(self, api_key: Optional[str] = None, max_workers: int = 8, dry_run: bool = False):
         self.api_key = api_key or os.getenv('GEMINI_API_KEY')
         if not self.api_key:
             raise ValueError("Gemini API key not found. Please set GEMINI_API_KEY environment variable.")
@@ -28,6 +28,7 @@ class GeminiClient:
         self.client = genai.Client(api_key=self.api_key)
         self.max_workers = max_workers
         self._request_lock = threading.Lock()
+        self.dry_run = dry_run
     
     @sleep_and_retry
     @limits(calls=1, period=0.2)
@@ -49,6 +50,10 @@ class GeminiClient:
         prompt = self._create_decision_prompt(game_state, player1_cards, player2_cards)
         print(f"Generating decisions for game state (turn {game_state.turn_counter})")
         
+        if self.dry_run:
+            print("--- Dry run, skipping generate decisions.")
+            return []
+
         try:
             response = self._make_request(prompt)
             return self._parse_decisions_response(response, game_state)
@@ -200,6 +205,6 @@ class GeminiClient:
         return True
 
 
-def create_gemini_client(max_workers: int = 8) -> GeminiClient:
+def create_gemini_client(max_workers: int = 8, dry_run: bool = False) -> GeminiClient:
     """Create a configured Gemini client."""
-    return GeminiClient(max_workers=max_workers)
+    return GeminiClient(max_workers=max_workers, dry_run=dry_run)

@@ -39,6 +39,9 @@ class Card:
         if _scryfall_api is None:
             _scryfall_api = ScryfallAPI()
         return _scryfall_api.get_card(name)
+
+    def name_sanitized(self) -> str:
+        return self.name.replace("'", "").replace('"', "")
     
 class ScryfallAPI:
     BASE_URL = "https://api.scryfall.com"

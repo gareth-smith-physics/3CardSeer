@@ -216,7 +216,7 @@ class GameTree:
         seen_states = set()  # Track game states we've already seen
         
         for decision in decisions:
-            print(f"Processing decision with viability {decision['viability']}: {decision['decision']}")
+            print(f"------> Option: {decision['decision']}")
 
             # Parse the resulting game state from the decision
             resulting_state_dict = decision.get("resulting_game_state", {})
@@ -288,8 +288,6 @@ class GameTree:
         for node in valid_nodes:
             batch_input.append((node.game_state, self.player1_cards, self.player2_cards))
         
-        print(f"Expanding {len(valid_nodes)} nodes in parallel...")
-        
         # Generate decisions in batch
         try:
             batch_decisions = gemini_client.generate_decisions_batch(batch_input)
@@ -315,7 +313,7 @@ class GameTree:
             seen_states = set()
             
             for decision in decisions:
-                print(f"Processing decision for node {node.node_id} with viability {decision['viability']}: {decision['decision'][:50]}...")
+                print(f"----> Option: {decision['decision'][:50]}...")
 
                 # Parse the resulting game state from the decision
                 resulting_state_dict = decision.get("resulting_game_state", {})
@@ -430,6 +428,7 @@ class GameTree:
                 transposition_target_id=node_data.get("transposition_target_id"),
                 is_loop=node_data.get("is_loop", False),
                 loop_target_id=node_data.get("loop_target_id"),
+                loop_hp_totals=node_data.get("loop_hp_totals"),
                 loop_type=node_data.get("loop_type"),
                 alpha_beta_skip=node_data.get("alpha_beta_skip")
             )

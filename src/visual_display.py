@@ -791,16 +791,16 @@ class GameStateWindow:
         self.current_game_tree_node = game_tree_node
         game_state = game_tree_node.game_state
 
-        print("Game tree node:")
-        print(f"  Decision: {game_tree_node.decision}")
-        print(f"  Viability: {game_tree_node.viability}")
-        print(f"  Explanation: {game_tree_node.explanation}")
-        print(f"  Is loop: {game_tree_node.is_loop}")
-        print(f"  Loop type: {game_tree_node.loop_type}")
-        print(f"  Is transposition: {game_tree_node.is_transposition}")
-        print(f"  Is alpha beta skipped: {game_tree_node.alpha_beta_skip}")
-        print("Game state")
-        print(game_state.to_dict())        
+        # print("Game tree node:")
+        # print(f"  Decision: {game_tree_node.decision}")
+        # print(f"  Viability: {game_tree_node.viability}")
+        # print(f"  Explanation: {game_tree_node.explanation}")
+        # print(f"  Is loop: {game_tree_node.is_loop}")
+        # print(f"  Loop type: {game_tree_node.loop_type}")
+        # print(f"  Is transposition: {game_tree_node.is_transposition}")
+        # print(f"  Is alpha beta skipped: {game_tree_node.alpha_beta_skip}")
+        # print("Game state")
+        # print(game_state.to_dict())        
         
         # Update title and info
         self.title_label.config(text=f"Game State - Turn {game_state.turn_counter}")

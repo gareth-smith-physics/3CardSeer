@@ -45,7 +45,7 @@ def parse_gauntlet_csv(file_path: str) -> List[List[str]]:
     return decks
 
 
-def compute_matchup_grid(decks: List[List[str]], config: AnalysisConfig, verbose: bool = False) -> Dict[Tuple[int, int], float]:
+def compute_matchup_grid(decks: List[List[str]], config: AnalysisConfig) -> Dict[Tuple[int, int], float]:
     """Compute matchup results for all pairs of decks."""
     n_decks = len(decks)
     matchup_grid = {}
@@ -80,7 +80,7 @@ def compute_matchup_grid(decks: List[List[str]], config: AnalysisConfig, verbose
                     matchup_grid[(i, j)] = 2 * result.outcome_float
                     matchup_grid[(j, i)] = 4 - 2 *result.outcome_float  # Symmetric matchup
                     
-                    if verbose:
+                    if config.verbose:
                         print(f"  Result: {result.outcome_string} ({result.outcome_float:.3f})")
                         print(f"  Analysis time: {analysis_time:.2f}s")
                         print(f"  Tree nodes: {result.total_nodes}, Max depth: {result.max_depth}")
@@ -184,6 +184,7 @@ The gauntlet CSV should have 3 card names per row, representing one deck.
     parser.add_argument("--timeout", type=int, default=defaults.analysis_timeout,
                        help="Analysis timeout in seconds")
     parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
+    parser.add_argument("--dry-run", action="store_true", help="Dry run, don't make any API calls")
     
     args = parser.parse_args()
     
@@ -205,12 +206,14 @@ The gauntlet CSV should have 3 card names per row, representing one deck.
         max_depth=args.max_depth,
         max_nodes=args.max_nodes,
         max_branches_per_node=args.max_branches,
-        analysis_timeout=args.timeout
+        analysis_timeout=args.timeout,
+        dry_run=args.dry_run,
+        verbose=args.verbose
     )
     
     # Compute matchups
     start_time = time.time()
-    matchup_grid = compute_matchup_grid(decks, config, args.verbose)
+    matchup_grid = compute_matchup_grid(decks, config)
     total_time = time.time() - start_time
     
     # Save results

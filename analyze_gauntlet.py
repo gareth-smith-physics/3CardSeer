@@ -105,13 +105,17 @@ def save_matchup_results(decks: List[List[str]], matchup_grid: Dict[Tuple[int, i
         with open(output_file, 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.writer(csvfile)
             
-            # Write header row with deck names
-            header = ['Deck'] + [f'Deck {i+1}: {", ".join(decks[i])}' for i in range(n_decks)]
-            writer.writerow(header)
+            # Write header rows with deck names
+            header_rows = [['','','Card 1'], ['','','Card 2'], ['Card 1','Card 2','Card 3']]
+            for deck in decks:
+                for i in range(3):
+                    header_rows[i].append(deck[i])
+            for i in range(3):
+                writer.writerow(header_rows[i])
             
             # Write matchup grid
             for i in range(n_decks):
-                row = [f'Deck {i+1}: {", ".join(decks[i])}']
+                row = list(decks[i])
                 for j in range(n_decks):
                     if i == j:
                         row.append('X')  # Same deck matchup
@@ -132,25 +136,45 @@ def print_summary(decks: List[List[str]], matchup_grid: Dict[Tuple[int, int], fl
     n_decks = len(decks)
     
     print(f"\n{'='*60}")
-    print("MATCHUP SUMMARY")
+    print("GAUNTLET SUMMARY")
     print(f"{'='*60}")
 
-    # Print matrix
+    # Print matrix in CSV format with proper alignment
     print("\nMatchup Matrix:")
-    print("   ", end="")
-    for i in range(n_decks):
-        print(f"Deck {i+1:2d} ", end="")
-    print()
     
+    # Calculate column widths for proper alignment
+    card_widths = [max(len(deck[i]) for deck in decks) for i in range(3)]  # Width for card name columns
+    deck_widths = [max([len(card) for card in deck]) for deck in decks]    # Width for body columns
+    
+    # Print header rows with deck names (matching CSV format)
+    header_rows = [f"{'':>{card_widths[0]}}  {'':>{card_widths[1]}}  {'Card 1':>{card_widths[2]}} | ",
+                   f"{'':>{card_widths[0]}}  {'':>{card_widths[1]}}  {'Card 2':>{card_widths[2]}} | ",
+                   f"{'Card 1':>{card_widths[0]}}  {'Card 2':>{card_widths[1]}}  {'Card 3':>{card_widths[2]}} | "]
+    for j in range(len(decks)):
+        for i in range(3):
+            header_rows[i] += f"{decks[j][i]:{deck_widths[j]}} | "
+    for row in header_rows:
+        print(row)
+    
+    # Print separator line
+    separator = "-" * (card_widths[0] + card_widths[1] + card_widths[2] + 4 + sum(deck_widths) + 3 * (len(decks) - 1) + 5)
+    print(separator)
+    
+    # Print matchup grid
     for i in range(n_decks):
-        print(f"Deck {i+1:2d} ", end="")
+        # Print deck cards
+        row_str = f"{decks[i][0]:>{card_widths[0]}}, {decks[i][1]:>{card_widths[1]}}, {decks[i][2]:>{card_widths[2]}} | "
+        
+        # Print matchup values
         for j in range(n_decks):
             if i == j:
-                print("   X  ", end="")
+                row_str += f"{'X':>{deck_widths[j]}} | "
             else:
                 value = matchup_grid.get((i, j), 0.0)
-                print(f"{value:6.3f} ", end="")
-        print()
+                row_str += f"{value:{deck_widths[j]}.3f} | "
+        
+        print(row_str)
+    
         
     print(f"\nTotal decks analyzed: {n_decks}")
     print(f"Total matchups analyzed: {n_decks * (n_decks - 1) // 2}")

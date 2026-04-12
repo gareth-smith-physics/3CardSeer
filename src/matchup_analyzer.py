@@ -179,7 +179,7 @@ class AutoTreeAnalyzer:
             batch_nodes: List[GameTreeNode] = []
             while len(batch_nodes) < batch_size and nodes_to_expand and tree.total_nodes < self.config.max_nodes:
                 current_node = nodes_to_expand.popleft()
-                if current_node.node_id not in expanded_nodes:
+                if current_node.node_id not in expanded_nodes and not current_node.is_terminal and len(current_node.children)==0 and not current_node.alpha_beta_skip:
                     batch_nodes.append(current_node)
             
             if not batch_nodes:

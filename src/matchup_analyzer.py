@@ -21,7 +21,7 @@ class AnalysisConfig:
     max_nodes: int = 500  # Maximum total nodes to prevent memory issues
     max_branches_per_node: int = 8  # Maximum branches to consider per node
     analysis_timeout: int = 3000  # Maximum analysis time in seconds
-    n_threads: int = 8  # Number of threads for parallel node expansion
+    n_threads: int = 16  # Number of threads for parallel node expansion
 
 
 @dataclass

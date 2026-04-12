@@ -835,7 +835,9 @@ class GameStateWindow:
         
         # Score
         if game_tree_node.score is not None:
-            status_parts.append(f"Score: {game_tree_node.score:.1f}")
+            score = game_tree_node.score
+            score_string = "P1 Wins" if score==1.0 else "P2 Wins" if score==-1.0 else "Tie" if score==0.0 else f"{score:.1f}"
+            status_parts.append(f"Score: {score_string}")
         
         # Terminal status
         if game_tree_node.is_terminal:

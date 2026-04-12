@@ -5,7 +5,7 @@ from typing import List, Dict, Optional, Any
 from uuid import uuid4
 from dataclasses import dataclass, field
 from .card_data import Card
-from .game_state import GameState, create_initial_game_state
+from .game_state import GameState, create_initial_game_states
 from .gemini_client import GeminiClient
 import uuid
 import json
@@ -82,11 +82,24 @@ class GameTree:
         self.player1_cards = player1_cards
         self.player2_cards = player2_cards
         
-        # Create initial game state
-        initial_state = create_initial_game_state(player1_cards, player2_cards)
-        
+        # Create initial game states
+        initial_states = create_initial_game_states(player1_cards, player2_cards)
+
         # Create root node
-        self.root = GameTreeNode(game_state=initial_state)
+        self.root = GameTreeNode(game_state=initial_states[0])
+
+        # Create alternative starting nodes
+        if len(initial_states) > 1:
+            for state in initial_states[1:]:
+                new_node = GameTreeNode(
+                    game_state=state,
+                    decision=None,
+                    viability=None,
+                    explanation=None
+                )
+                self.root.add_child(new_node)
+                self.nodes[new_node.node_id] = new_node
+
         self.nodes: Dict[str, GameTreeNode] = {self.root.node_id: self.root}
         self.terminal_nodes: List[GameTreeNode] = []
         self.max_depth = 0
@@ -276,6 +289,9 @@ class GameTree:
                 continue
             if len(node.children) > 0:
                 print(f"Warning: Node {node.node_id} already has {len(node.children)} children")
+                continue
+            if node.alpha_beta_skip:
+                print(f"Skipping node {node.node_id} due to alpha-beta pruning")
                 continue
             valid_nodes.append(node)
         

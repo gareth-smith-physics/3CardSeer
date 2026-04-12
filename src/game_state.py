@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Any
 from enum import Enum
 from .card_data import Card
+from copy import deepcopy
 
 
 class Phase(Enum):
@@ -93,6 +94,26 @@ class Permanent:
             name=data.get('name', ''),
             type_line=data.get('type_line', ''),
             quantity=data.get('quantity', 1)
+        )
+
+    @classmethod
+    def from_card_name(cls, card_name: str, controller: str) -> 'Permanent':
+        """Create a Permanent from a card name."""
+        card=Card.from_name(card_name)
+        return cls(
+            controller=controller,
+            card=card,
+            tapped=False,
+            counters={},
+            modifiers="",
+            is_token=False,
+            summoning_sick=False,
+            damage=0,
+            power=card.power,
+            toughness=card.toughness,
+            name=card.name,
+            type_line=card.type_line,
+            quantity=1
         )
     
 @dataclass
@@ -276,9 +297,29 @@ class GameState:
         return game_state
 
 
-def create_initial_game_state(player1_cards: List[Card], player2_cards: List[Card]) -> GameState:
+def create_initial_game_states(player1_cards: List[Card], player2_cards: List[Card]) -> List[GameState]:
     """Create the initial game state for a 3-card blind matchup."""
     game_state = GameState()
     game_state.player1_state.hand = player1_cards.copy()
     game_state.player2_state.hand = player2_cards.copy()
-    return game_state
+    games_states = [game_state]
+
+    # Leyline check
+    for card in player1_cards:
+        if "If this card is in your opening hand, you may begin the game with it on the battlefield." in card.oracle_text:
+            for game_state in games_states:
+                new_game_state = deepcopy(game_state)
+                new_game_state.player1_state.battlefield.append(Permanent.from_card_name(card.name, "player1"))
+                new_game_state.player1_state.hand.remove(card)
+                games_states.append(new_game_state)
+
+    for card in player2_cards:
+        if "If this card is in your opening hand, you may begin the game with it on the battlefield." in card.oracle_text:
+            for game_state in games_states:
+                new_game_state = deepcopy(game_state)
+                new_game_state.player2_state.battlefield.append(Permanent.from_card_name(card.name, "player2"))
+                new_game_state.player2_state.hand.remove(card)
+                games_states.append(new_game_state)
+
+
+    return games_states

@@ -32,6 +32,7 @@ class GameTreeNode:
     loop_type: Optional[str] = None  # "exact" or "near" to describe the type of loop
     loop_target_id: Optional[str] = None  # ID of the node this creates a loop with
     loop_hp_totals: Optional[List[tuple[int, int]]] = None  # List of (p1_hp, p2_hp) tuples for loop nodes
+    alpha_beta_skip: bool = False  # Node is pruned by alpha-beta pruning
     
     def __post_init__(self):
         if self.game_state.is_game_over():
@@ -43,6 +44,12 @@ class GameTreeNode:
         child_node.parent = self
         child_node.depth = self.depth + 1
         self.children.append(child_node)
+
+    def mark_alpha_beta_skip(self) -> None:
+        """Mark this node and its children as skipped by alpha-beta pruning."""
+        self.alpha_beta_skip = True
+        for child in self.children:
+            child.mark_alpha_beta_skip()
         
     def to_dict(self) -> Dict[str, Any]:
         """Convert node to dictionary for serialization."""
@@ -61,6 +68,7 @@ class GameTreeNode:
             "loop_type": self.loop_type,
             "loop_target_id": self.loop_target_id,
             "loop_hp_totals": self.loop_hp_totals,
+            "alpha_beta_skip": self.alpha_beta_skip,
             "game_state": self.game_state.to_dict(),
             "children_ids": [child.node_id for child in self.children],
             "parent_id": self.parent.node_id if self.parent else None
@@ -422,7 +430,8 @@ class GameTree:
                 transposition_target_id=node_data.get("transposition_target_id"),
                 is_loop=node_data.get("is_loop", False),
                 loop_target_id=node_data.get("loop_target_id"),
-                loop_type=node_data.get("loop_type")
+                loop_type=node_data.get("loop_type"),
+                alpha_beta_skip=node_data.get("alpha_beta_skip")
             )
             
             tree.nodes[node_id] = node

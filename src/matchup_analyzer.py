@@ -137,6 +137,10 @@ class AutoTreeAnalyzer:
     def _populate_and_analyze_tree(self, tree: GameTree, starting_player: str):
         """Populate the game tree using batch expansion with integrated analysis."""
 
+        # Clear and reanalyze the tree before expansion begins
+        self._clear_tree_scores(tree)
+        self._analyze_current_tree_state(tree)
+
         # Recover nodes to expand from previous run if available
         nodes_to_expand = deque()
         if len(tree.root.children)==0:
@@ -144,22 +148,20 @@ class AutoTreeAnalyzer:
         else:
             for node in tree.nodes.values():
                 if len(node.children)>0:
-                    if any([child.viability >= self.config.viability_threshold for child in node.children]):
-                        for child in node.children:
-                            if child.viability >= self.config.viability_threshold and len(child.children) == 0 and not child.is_terminal:
-                                nodes_to_expand.append(child)
-                    else:
-                        max_viability = max([child.viability for child in node.children])
-                        for child in node.children:
-                            if child.viability==max_viability and len(child.children) == 0 and not child.is_terminal:
-                                nodes_to_expand.append(child)
+                    nodes_to_expand.extend(self._get_children_to_expand(node))
 
         expanded_nodes = set()
         batch_size = self.config.n_threads  # Use n_threads as batch size
         
         while nodes_to_expand and tree.total_nodes < self.config.max_nodes:
+
+            # Before each batch, recalculate scores and propagate using minimax
+            print("Clearing, recalculating, and repropagating node scores")
+            self._clear_tree_scores(tree)
+            self._analyze_current_tree_state(tree)
+
             # Collect a batch of nodes to expand
-            batch_nodes = []
+            batch_nodes: List[GameTreeNode] = []
             while len(batch_nodes) < batch_size and nodes_to_expand and tree.total_nodes < self.config.max_nodes:
                 current_node = nodes_to_expand.popleft()
                 if current_node.node_id not in expanded_nodes:
@@ -172,39 +174,14 @@ class AutoTreeAnalyzer:
             print(f"   Expanding batch of {len(batch_nodes)} nodes...")
             
             # Expand nodes in batch
-            batch_results = tree.expand_nodes_batch(batch_nodes, self.gemini_client, self.config.max_branches_per_node)
+            tree.expand_nodes_batch(batch_nodes, self.gemini_client, self.config.max_branches_per_node)
             
             # Mark nodes as expanded and process results
             for node in batch_nodes:
                 expanded_nodes.add(node.node_id)
-                children = batch_results.get(node.node_id, [])
-                
-                if node.depth+1 >= self.config.max_depth:
-                    print(f"   Node {node.node_id} reached max depth, stopping expansion")
-                    continue
-                    
-                # Add viable children to expansion queue
-                viable_children_added = 0
-                for child in children:
-                    # Check viability threshold
-                    if (child.viability < self.config.viability_threshold):
-                        continue
-
-                    # Skip if terminal or max depth reached
-                    if (child.is_terminal):
-                        continue
-                
-                    nodes_to_expand.append(child)
-                    viable_children_added += 1
-
-                # If no viable children were added, stop expanding
-                if len(children)>0 and viable_children_added == 0:
-                    print(f"   Node {node.node_id} has children but none viable, expanding most viable node anyway")
-                    # Expand the most viable nodes
-                    max_viability = max([child.viability for child in children])
-                    for child in children:
-                        if child.viability==max_viability and not child.is_terminal:
-                            nodes_to_expand.append(child)
+                children_to_expand = self._get_children_to_expand(node)
+                nodes_to_expand.extend(children_to_expand)
+                viable_children_added += len(children_to_expand)
 
             # After each batch, recalculate scores and propagate using minimax
             print("Clearing, recalculating, and repropagating node scores")
@@ -253,8 +230,8 @@ class AutoTreeAnalyzer:
                         node.outcome = other_node.outcome
                         break
 
-        # Propagate scores up the tree using minimax
-        self._minimax(tree.root)
+        # Propagate scores up the tree using alpha-beta minimax
+        self._minimax(tree.root, float('-inf'), float('inf'))
     
     def _analyze_tree(self, tree: GameTree) -> Dict:
         """Final analysis of a completed tree to determine optimal play."""
@@ -318,33 +295,72 @@ class AutoTreeAnalyzer:
         else:  # draw
             return 0.0
     
-    def _minimax(self, node: GameTreeNode):
-        """Apply minimax algorithm to propagate scores."""
+    def _minimax(self, node: GameTreeNode, alpha: float = float('-inf'), beta: float = float('inf')):
+        """Apply minimax algorithm with alpha-beta pruning to propagate scores."""
+        
         if node.is_terminal:
             return node.score
         
-        # Get scores from children
-        child_scores = []
-        for child in node.children:
-            self._minimax(child)
-            if child.score is not None:
-                child_scores.append(child.score)
-        
-        if not child_scores:
-            return None
-        
-        # Determine current player
         current_player = node.game_state.player_to_act
+        n_children = len(node.children)
         
-        # Choose best score for current player
         if current_player == "player1":
             # Player 1 wants to maximize the score
-            node.score = max(child_scores)
+            max_eval = float('-inf')
+            for i_child in range(n_children):
+                child = node.children[i_child]
+                eval_score = self._minimax(child, alpha, beta)
+                if eval_score is not None:
+                    max_eval = max(max_eval, eval_score)
+                    alpha = max(alpha, eval_score)
+                    # Alpha-beta pruning
+                    if beta <= alpha:
+                        # Mark all further nodes as skipped by alpha beta pruning
+                        for j in range(i_child + 1, n_children):
+                            node.children[j].mark_alpha_beta_skip()
+                        break
+            node.score = max_eval if max_eval != float('-inf') else None
+            return node.score
         else:
             # Player 2 wants to minimize the score
-            node.score = min(child_scores)
-        
-        return node.score
+            min_eval = float('inf')
+            for i_child in range(n_children):
+                child = node.children[i_child]
+                eval_score = self._minimax(child, alpha, beta)
+                if eval_score is not None:
+                    min_eval = min(min_eval, eval_score)
+                    beta = min(beta, eval_score)
+                    # Alpha-beta pruning
+                    if beta <= alpha:
+                        # Mark all further nodes as skipped by alpha beta pruning
+                        for j in range(i_child + 1, n_children):
+                            node.children[j].mark_alpha_beta_skip()
+                        break
+            node.score = min_eval if min_eval != float('inf') else None
+            return node.score
+    
+    def _get_children_to_expand(self, node: GameTreeNode) -> List[GameTreeNode]:
+        """Get the children that should be expanded."""
+        if node.is_terminal or len(node.children) == 0 or node.depth+1 >= self.config.max_depth:
+            return []
+
+        # First filter by viability
+        potential_children_to_expand = [child for child in node.children if child.viability >= self.config.viability_threshold]
+        if len(potential_children_to_expand)==0:
+            print("Node has children but none over viability threshold. Picking the most viable...")
+            print([child.viability for child in node.children])
+            max_viability = max([child.viability for child in node.children])
+            for child in node.children:
+                if child.viability==max_viability and not child.is_terminal:
+                    potential_children_to_expand.append(child)
+
+        # Then filter by alpha-beta bounds, grandchildren, and terminality
+        children_to_expand = []
+        for child in potential_children_to_expand:
+            if not child.is_terminal and len(child.children)==0 and not child.alpha_beta_skip:
+                children_to_expand.append(child)
+                
+        return children_to_expand
     
     def _find_optimal_path(self, node: GameTreeNode) -> List[GameTreeNode]:
         """Find the optimal path from root to terminal node."""

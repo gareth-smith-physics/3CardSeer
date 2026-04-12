@@ -286,7 +286,10 @@ class GameTreeWindow:
                     color = "lightcoral"
                 else:
                     color = "lightyellow"
-            # Priority 5: Player to act
+            # Priority 5: Skipped by alpha beta pruning
+            elif visual_node.game_tree_node.alpha_beta_skip:
+                color = "#A0B8A9"
+            # Priority 6: Player to act
             else:
                 player_to_act = visual_node.game_tree_node.game_state.player_to_act
                 if player_to_act == "player1":
@@ -795,6 +798,7 @@ class GameStateWindow:
         print(f"  Is loop: {game_tree_node.is_loop}")
         print(f"  Loop type: {game_tree_node.loop_type}")
         print(f"  Is transposition: {game_tree_node.is_transposition}")
+        print(f"  Is alpha beta skipped: {game_tree_node.alpha_beta_skip}")
         print("Game state")
         print(game_state.to_dict())        
         
@@ -855,6 +859,10 @@ class GameStateWindow:
             status_parts.append("Transposition")
             if game_tree_node.transposition_target_id:
                 status_parts.append(f"Target: {game_tree_node.transposition_target_id[:8]}...")
+        
+        # Alpha beta skip status
+        if game_tree_node.alpha_beta_skip:
+            status_parts.append("Skipped by alpha-beta pruning")
         
         # Expanded status
         if len(game_tree_node.children) > 0:

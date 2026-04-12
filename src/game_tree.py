@@ -87,20 +87,20 @@ class GameTree:
 
         # Create root node
         self.root = GameTreeNode(game_state=initial_states[0])
+        self.nodes: Dict[str, GameTreeNode] = {self.root.node_id: self.root}
 
         # Create alternative starting nodes
-        if len(initial_states) > 1:
-            for state in initial_states[1:]:
+        if len(initial_states) > 0:
+            for state in initial_states:
                 new_node = GameTreeNode(
                     game_state=state,
-                    decision=None,
-                    viability=None,
+                    decision="Multiple possible starting states",
+                    viability=10,
                     explanation=None
                 )
                 self.root.add_child(new_node)
                 self.nodes[new_node.node_id] = new_node
 
-        self.nodes: Dict[str, GameTreeNode] = {self.root.node_id: self.root}
         self.terminal_nodes: List[GameTreeNode] = []
         self.max_depth = 0
         self.total_nodes = 1

@@ -21,6 +21,7 @@ class AnalysisConfig:
     max_nodes: int = 500  # Maximum total nodes to prevent memory issues
     max_branches_per_node: int = 8  # Maximum branches to consider per node
     analysis_timeout: int = 3000  # Maximum analysis time in seconds
+    max_request_fails: int = 5   # Maximum number of Gemini request fails before abortion
     n_threads: int = 16  # Number of threads for parallel node expansion
     dry_run: bool = False  # If True, skip Gemini API calls
     verbose: bool = False  # Enable verbose output
@@ -50,6 +51,7 @@ class AutoTreeAnalyzer:
         self.gemini_client = create_gemini_client(max_workers=config.n_threads, dry_run=config.dry_run)
         self.tree_manager = TreeManager()
         self.matchup_name = "auto_analysis"
+        self.request_failed_counter = 0
         
     def analyze_matchup(self, p1_cards: List[Card], p2_cards: List[Card], load_tree: bool = False, skip_population: bool = False) -> AnalysisResult:
         """Analyze a 3-card blind matchup and determine optimal play."""
@@ -163,6 +165,12 @@ class AutoTreeAnalyzer:
         
         while nodes_to_expand and tree.total_nodes < self.config.max_nodes:
 
+            # If there have been too many failed attempts (i.e. model busy), abort
+            if self.request_failed_counter >= self.config.max_request_fails:
+                print(f"\nNumber of failed requests ({self.request_failed_counter}) >= config.max_request_fails ({self.config.max_request_fails}).")
+                print("Aborting analysis...\n")
+                break
+
             # Before each batch, recalculate scores and propagate using minimax
             self._clear_tree_scores(tree)
             self._analyze_current_tree_state(tree)
@@ -181,10 +189,18 @@ class AutoTreeAnalyzer:
             print(f"   Expanding batch of {len(batch_nodes)} nodes...")
             
             # Expand nodes in batch
-            tree.expand_nodes_batch(batch_nodes, self.gemini_client, self.config.max_branches_per_node)
+            results = tree.expand_nodes_batch(batch_nodes, self.gemini_client, self.config.max_branches_per_node)
             
             # Mark nodes as expanded and process results
             for node in batch_nodes:
+
+                # Check if expansion failed
+                if results[node.node_id] == []:
+                    self.request_failed_counter += 1
+                    nodes_to_expand.append(node)
+                    continue
+
+                # Expansion was good
                 expanded_nodes.add(node.node_id)
                 children_to_expand = self._get_children_to_expand(node)
                 nodes_to_expand.extend(children_to_expand)

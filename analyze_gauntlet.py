@@ -205,6 +205,8 @@ The gauntlet CSV should have 3 card names per row, representing one deck.
                        help="Maximum total nodes")
     parser.add_argument("--max-branches", type=int, default=defaults.max_branches_per_node,
                        help="Maximum branches per node")
+    parser.add_argument("--max-request-fails", type=int, default=defaults.max_request_fails,
+                       help="Maximum number of Gemini request fails before abortion")
     parser.add_argument("--timeout", type=int, default=defaults.analysis_timeout,
                        help="Analysis timeout in seconds")
     parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
@@ -232,6 +234,7 @@ The gauntlet CSV should have 3 card names per row, representing one deck.
         max_branches_per_node=args.max_branches,
         analysis_timeout=args.timeout,
         dry_run=args.dry_run,
+        max_request_fails=args.max_request_fails,
         verbose=args.verbose
     )
     

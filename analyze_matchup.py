@@ -35,6 +35,8 @@ To see available analysis settings:
                        help="Maximum total nodes")
     parser.add_argument("--max-branches", type=int, default=defaults.max_branches_per_node,
                        help="Maximum branches per node")
+    parser.add_argument("--max-request-fails", type=int, default=defaults.max_request_fails,
+                       help="Maximum number of Gemini request fails before abortion")
     parser.add_argument("--timeout", type=int, default=defaults.analysis_timeout,
                        help="Analysis timeout in seconds")
     parser.add_argument("--n-threads", type=int, default=defaults.n_threads,
@@ -67,6 +69,7 @@ To see available analysis settings:
         max_depth=args.max_depth,
         max_nodes=args.max_nodes,
         max_branches_per_node=args.max_branches,
+        max_request_fails=args.max_request_fails,
         analysis_timeout=args.timeout,
         n_threads=args.n_threads,
         dry_run=args.dry_run,

@@ -74,13 +74,25 @@ Return a JSON array of decisions. Each decision should have this structure:
       "has_won": boolean
     }},
     "player2": {{same structure as player1}},
-    "stack": [],
+    "stack": [("card_or_ability_name", "player1|player2")],
     "combat_attackers": [],
     "combat_blockers": {{}}
   }},
   "viability": number (1-10, where 10 is best),
   "explanation": "Brief explanation of why this viability score was chosen"
 }}
+
+The stack should be a list of tuples, where each tuple is (card_name, player_who_cast_it).
+The order of the list indicates the order of the stack, with the most recently cast card (which will resolve first) at the end.
+
+The phase should be chosen from the following options: "pregame_player1", "pregame_player2", "untap", "upkeep", "draw", "precombat_main", "combat_begin", "combat_declare_attackers",
+      "combat_declare_blockers", "combat_damage", "combat_end", "postcombat_main", "end", "cleanup".
+Set this phase according to the next phase that will require a decision from the opponent.
+The only actions which can be taken in the pregame phases are putting leyline cards onto the battlefield.
+
+The "has_won" field should ONLY be set to true if the game has ended via the resolution of an effect which directly wins the game,
+such as the resolution of the Thassa's Oracle ability.
+Do not set "has_won" to true in any other scenarios.
 
 IMPORTANT:
 - Be comprehensive and include all possible options
@@ -98,14 +110,6 @@ TURN PROGRESSION RULES:
 - If this involves passing the turn, as it often will, make sure to flip the turn_player field, and increment the turn counter.
 - If this involves ending a phase, make sure to advance to the next appropriate phase.
 - The player_to_act should always be flipped in the resulting game state, to represent that the next decision will be made by the other player.
-
-The phase should be chosen from the following options: "pregame_player1", "pregame_player2", "untap", "upkeep", "draw", "precombat_main", "combat_begin", "combat_declare_attackers",
-      "combat_declare_blockers", "combat_damage", "combat_end", "postcombat_main", "end", "cleanup".
-Set this phase according to the next phase that will require a decision from the opponent.
-
-The "has_won" field should ONLY be set to true if the game has ended via the resolution of an effect which directly wins the game,
-such as the resolution of the Thassa's Oracle ability.
-Do not set "has_won" to true in any other scenarios.
 
 VERY IMPORTANT:
 - Be very careful about which permanents are tapped in the final state.

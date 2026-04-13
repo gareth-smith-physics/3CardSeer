@@ -167,7 +167,7 @@ class GameState:
     phase: Phase = Phase.PRECOMBAT_MAIN
     player1_state: PlayerState = field(default_factory=PlayerState)
     player2_state: PlayerState = field(default_factory=PlayerState)
-    stack: List[Dict[str, Any]] = field(default_factory=list)
+    stack: List[Any] = field(default_factory=list)
     combat_attackers: List[str] = field(default_factory=list)  # Permanent IDs
     combat_blockers: Dict[str, List[str]] = field(default_factory=dict)  # attacker_id -> [blocker_ids]
     
@@ -308,11 +308,13 @@ def create_initial_game_state(player1_cards: List[Card], player2_cards: List[Car
     for card in player2_cards:
         if "If this card is in your opening hand, you may begin the game with it on the battlefield." in card.oracle_text:
             game_state.phase = Phase.PREGAME_P2
+            game_state.player_to_act = "player2"
             break
     
     for card in player1_cards:
         if "If this card is in your opening hand, you may begin the game with it on the battlefield." in card.oracle_text:
             game_state.phase = Phase.PREGAME_P1
+            game_state.player_to_act = "player1"
             break
 
     return game_state

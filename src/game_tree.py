@@ -83,7 +83,7 @@ class GameTree:
         self.player2_cards = player2_cards
         
         # Create initial game state
-        initial_states = create_initial_game_state(player1_cards, player2_cards)
+        initial_state = create_initial_game_state(player1_cards, player2_cards)
 
         # Create root node
         self.root = GameTreeNode(game_state=initial_state)

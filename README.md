@@ -6,16 +6,16 @@ The possible actions and resulting game states are fully handled by Gemini, with
 
 The workflow demonstrated here could be applied to any number of situations where modelling the environment, decisions, and outcomes is prohibitively nuanced for a bespoke analysis, but where the enviornment, decisions, and outcomes are already partially encapuslated by a pre-trained AI model.
 
-## Features
+## How It Works
 
-- **Card Data Integration**: Automatically fetches card details from Scryfall API
-- **AI-Powered Decision Making**: Uses Google Gemini to generate optimal play decisions
-- **Game Tree Exploration**: Builds comprehensive decision trees for both starting players
-- **Min-Max Optimization**: Applies game theory to determine optimal outcomes
-- **Complete Game State Modeling**: Tracks all aspects of MTG gameplay (life, permanents, hand, graveyard, etc.)
-- **Interactive Visualization**: GUI with hover effects, tooltips, and visual indicators 
-- **Automatic Tree Analysis**: Command-line tools for automated matchup analysis
-- **Gauntlet Analysis**: Batch analysis of multiple decks with matchup grids and rankings
+1. **Card Fetching**: Retrieves detailed card information from Scryfall API.
+2. **Tree Initialization**: Creates two game trees (one for each starting player).
+3. **Decision Generation**: Uses Gemini AI to explore all legal moves and the resulting game states.
+4. **Tree Expansion**: Recursively builds the decision trees until terminal states (or loop detection).
+5. **Node Scoring**: Applies min-max algorithm with alpha-beta pruning to progagate node scores.
+6. **Matchup Solving**: Returns the matchup outcome and optimal lines.
+7. **Gauntlet Calculation**: Can compute all matchups given a list of decks, yielding a filled spreadsheet.
+8. **Visualization**: Interactive GUI displays trees and game states to explore match outcomes.
 
 ## Requirements
 
@@ -232,17 +232,6 @@ To visualize the trees, run:
    - High-level analysis orchestration
    - Tree management and caching
    - Result compilation
-
-## How It Works
-
-1. **Card Fetching**: Retrieves detailed card information from Scryfall API
-2. **Tree Initialization**: Creates two game trees (one for each starting player)
-3. **Decision Generation**: Uses Gemini AI to explore all legal moves at each game state
-4. **Tree Expansion**: Recursively builds the decision tree until terminal states
-5. **Optimization**: Applies min-max algorithm with alpha-beta pruning
-6. **Analysis**: Determines optimal outcomes and confidence levels
-7. **Visualization**: Interactive GUI displays trees and game states
-
 
 
 ## Limitations

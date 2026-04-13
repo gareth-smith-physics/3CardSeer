@@ -7,6 +7,8 @@ from .card_data import Card
 
 
 class Phase(Enum):
+    PREGAME_P1 = "pregame_player1"
+    PREGAME_P2 = "pregame_player2"
     UNTAP = "untap"
     UPKEEP = "upkeep"
     DRAW = "draw"
@@ -301,4 +303,16 @@ def create_initial_game_state(player1_cards: List[Card], player2_cards: List[Car
     game_state = GameState()
     game_state.player1_state.hand = player1_cards.copy()
     game_state.player2_state.hand = player2_cards.copy()
+
+    # Leyline check
+    for card in player2_cards:
+        if "If this card is in your opening hand, you may begin the game with it on the battlefield." in card.oracle_text:
+            game_state.phase = Phase.PREGAME_P2
+            break
+    
+    for card in player1_cards:
+        if "If this card is in your opening hand, you may begin the game with it on the battlefield." in card.oracle_text:
+            game_state.phase = Phase.PREGAME_P1
+            break
+
     return game_state

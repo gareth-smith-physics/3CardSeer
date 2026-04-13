@@ -307,24 +307,18 @@ def create_initial_game_states(player1_cards: List[Card], player2_cards: List[Ca
     # Leyline check
     for card in player1_cards:
         if "If this card is in your opening hand, you may begin the game with it on the battlefield." in card.oracle_text:
-            for game_state in list(games_states):
+            for game_state in games_states:
                 new_game_state = deepcopy(game_state)
                 new_game_state.player1_state.battlefield.append(Permanent.from_card_name(card.name, "player1"))
-                for c in game_state.player1_state.hand:
-                    if c.name == card.name:
-                        new_game_state.player1_state.hand.remove(c)
-                        break
+                new_game_state.player1_state.hand.remove(card)
                 games_states.append(new_game_state)
 
     for card in player2_cards:
         if "If this card is in your opening hand, you may begin the game with it on the battlefield." in card.oracle_text:
-            for game_state in list(games_states):
+            for game_state in games_states:
                 new_game_state = deepcopy(game_state)
                 new_game_state.player2_state.battlefield.append(Permanent.from_card_name(card.name, "player2"))
-                for c in game_state.player2_state.hand:
-                    if c.name == card.name:
-                        new_game_state.player2_state.hand.remove(c)
-                        break
+                new_game_state.player2_state.hand.remove(card)
                 games_states.append(new_game_state)
 
 

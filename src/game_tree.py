@@ -159,7 +159,7 @@ class GameTree:
         """Check if new_node creates an exact loop with any predecessor."""
         current = new_node.parent
         while current:
-            if current.game_state.is_identical(new_node.game_state):
+            if current.game_state.is_identical(new_node.game_state) and new_node.game_state.turn_counter > current.game_state.turn_counter:
                 return current
             current = current.parent
         return None
